@@ -9,7 +9,8 @@ namespace Zekohop
 {
     public static class Levels
     {
-        //private static Dictionary<string, object> levelData = new Dictionary<string, object>();
+        // this class handles the data levels contain
+        // it has 3 lists, for each type of objects in the game. Set level data handles the lists and creates instances with the proper coordinates. Impossible stuff like havint two objects on the same coordinate is not handled. Maybe if a level creator is added later :)
 
         private static List<Mushroom> mushroomList = new List<Mushroom>();
         private static List<Bunny> bunnyList = new List<Bunny>();
@@ -21,15 +22,19 @@ namespace Zekohop
         internal static List<Mushroom> MushroomList { get => mushroomList; set => mushroomList = value; }
         internal static List<Bunny> BunnyList { get => bunnyList; set => bunnyList = value; }
         internal static List<Fox> FoxList { get => foxList; set => foxList = value; }
-        internal static int LevelIndex { get => levelIndex; set => levelIndex = value; }
-        internal static int NumberOfMOves { get => numberOfMOves; set => numberOfMOves = value; }
+        
+        
+        internal static int LevelIndex { get => levelIndex; set => levelIndex = value; } // handles the current level
+        internal static int NumberOfMOves { get => numberOfMOves; set => numberOfMOves = value; } // represents the number of minimal moves neededt to solve the level
 
         internal static void SetLevelData()
         {
+            // cleaning up the data before generating the level
             mushroomList.Clear();
             bunnyList.Clear();
             foxList.Clear();
 
+            // levels are hardcoded data taken from the game booklet
             switch (LevelIndex)
             {
                 case 1:
@@ -842,16 +847,5 @@ namespace Zekohop
 
             }
         }
-
-        //public void dummyMethod()
-        //{
-        //    for (int i = 1; i<61; i++)
-        //    {
-        //        Console.WriteLine($"case {i}:");
-        //        Console.WriteLine("break;");
-        //        Console.WriteLine();
-        //    }
-        //}
-
     }
 }
