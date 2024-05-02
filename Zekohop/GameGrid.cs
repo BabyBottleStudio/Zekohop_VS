@@ -15,12 +15,8 @@ namespace Zekohop
 
         List<(int row, int col)> holeList; // hole list treba da bude fleksibilna lista
 
-        //List<Bunny> bunnyList = new List<Bunny>();
-        //List<Fox> foxList = new List<Fox>();
-
-        //internal List<Fox> FoxList { get => foxList; set => foxList = value; }
-        //internal List<Bunny> BunnyList { get => bunnyList; set => bunnyList = value; }
-
+        //public int selectedAnimal; deliberate error!
+        //public int movementDirection;
 
         /*
         00 01 02 03 04
@@ -41,7 +37,7 @@ namespace Zekohop
         {
             //ResetBunniesFoxesCount();
             holeList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
-            
+
             for (int i = 0; i < gridSize; i--)
             {
                 for (int j = 0; j < gridSize; j--)
@@ -51,33 +47,18 @@ namespace Zekohop
             }
         }
 
-        /*
-        public void DisplayGrid()
-        {
-            for (int i = 0; i < gridSize; i++)
-            {
-                for (int j = 0; j < gridSize; j++)
-                {
-                    Console.Write($"{_grid[i, j]} ");
-                }
-                Console.WriteLine();
-            }
-        }
-
-        */
-
 
         public void DisplayGridAdv()
         {
             Console.WriteLine($"Level {Levels.LevelIndex}. >>{Levels.NumberOfMOves}.");
             for (int i = 0; i < gridSize; i++)
             {
-                
+
                 if (i == 0)
                 {
                     Console.WriteLine(" --- --- --- --- --- ");
                 }
-                
+
                 else
                 {
                     Console.WriteLine("|---| - |---| - |---|");
@@ -203,7 +184,7 @@ namespace Zekohop
                     Console.WriteLine(" --- --- --- --- --- ");
                 }
 
-                
+
 
             }
             Console.WriteLine($"Number of moves {movesCount}");
@@ -218,14 +199,142 @@ namespace Zekohop
             holeList.Remove(mushroomPos); // if mushroom covers the hole, delete i the hole from the list
         }
 
-        
-        public void WriteBunnyIdToTheGrid(Bunny theBunny)
+
+        public void WriteBunnyIdToTheGridInitial(Bunny theBunny)
         {
             _grid[theBunny.StartPos.row, theBunny.StartPos.col] = theBunny.Id;
-            
+
             //BunnyList.Add(theBunny);
         }
-        
+
+        private bool IsBunnyGoingToJupmOutOfTheGrid(Bunny theBunny, int direction) // da li je ovaj test neophodan ili samo mi treba bolja logika dole u funkcijijijiji. Ili ovaj test sprecava dalje proracune ako se nije ispunio
+        {
+            // Initial test if the bunny is going to jump out of the grid
+            (int y, int x) = theBunny.CurrentPos;
+
+            switch (direction)
+            {
+                case -1:
+                    if (x <= 1) // if a bunny jumps from here to the left, it will jump out of the grid; odavde ako preskoci nesto na levo, ispada iz grida
+                    {
+                        return false;
+                    }
+                    break;
+
+                case 1:
+
+                    if (x >= gridSize - 1) // if a bunny jumps from here to the right, it will jump out of the grid; odavde ako preskoci nesto na desno, ispada iz grida
+                    {
+                        return false;
+                    }
+                    break;
+
+                case -2:
+
+                    if (y <= 1) // if a bunny jumps up from here, it will jump out of the grid; odavde ako preskoci nesto na gore, ispada iz grida
+                    {
+                        return false;
+                    }
+                    break;
+
+                case 2:
+
+                    if (y >= gridSize - 1) //  if a bunny jumps down from here, it will jump out of the grid; odavde ako preskoci nesto na dole, ispada iz grida
+                    {
+                        return false;
+                    }
+                    break;
+            }
+            return true;
+        }
+
+
+        private bool IsBunnyLegitToJump(Bunny theBunny, int direction) // this method checks if the selected bunny is going to jump over the fox, mushroom or another bunny and retunrs bool
+        {
+            // values are inverted because they have more logic that way. 
+            (int y, int x) = theBunny.CurrentPos; // ovo isto napraviti kao public parametar 
+
+            switch (direction)
+            {
+                case -1:
+                    if (_grid[y, x - 1] > 0) // if it jumps to the left, will it jump over something or not
+                    {
+                        return true;
+                    }
+                    break;
+
+                case 1:
+                    if (_grid[y, x + 1] > 0)  // if it jumps to the right, will it jump over something or not
+                    {
+                        return true;
+                    }
+                    break;
+
+                case -2:
+                    if (_grid[y - 1, x] > 0)  // if it jumps upwards, will it jump over something or not
+                    {
+                        return true;
+                    }
+                    break;
+
+                case 2:
+                    if (_grid[y + 1, x] > 0) // if it jumps downwards, will it jump over something or not
+                    {
+                        return true;
+                    }
+                    break;
+            }
+            return false;
+        }
+
+        private (int a, int b)? GetPlaceToHopTo(Bunny theBunny, int direction)
+        {
+            (int y, int x) = theBunny.CurrentPos; // ovo isto napraviti kao public parametar 
+
+            switch (direction)
+            {
+                case -1:
+                    for (int i = x; i >= 0; i--) // trazimo mesto doskoka kroz lup i+direction
+                    {
+                        if (_grid[y, i] == 0) // trazimo polje doskoka
+                        {
+                            return (y, i);
+                        }
+                    }
+                    break;
+
+                case 1:
+                    for (int i = x; i < gridSize; i++) // trazimo mesto doskoka kroz lup 
+                    {
+                        if (_grid[y, i] == 0) // trazimo polje doskoka
+                        {
+                            return (y, i);
+                        }
+                    }
+                    break;
+
+                case -2:
+                    for (int i = y; i >= 0; i--) // trazimo mesto doskoka kroz lup 
+                    {
+                        if (_grid[i, x] == 0) // trazimo polje doskoka
+                        {
+                            return (i, x);
+                        }
+                    }
+                    break;
+
+                case 2:
+                    for (int i = y; i < gridSize; i++) // trazimo mesto doskoka kroz lup --- sta ako ga ne nadje!!!!!!!
+                    {
+                        if (_grid[i, x] == 0) // trazimo polje doskoka
+                        {
+                            return (i, x);
+                        }
+                    }
+                    break;
+            }
+            return null;
+        }
         public void MoveBunny(Bunny theBunny, int direction)
         {
             // direction
@@ -239,116 +348,45 @@ namespace Zekohop
 
             (int a, int b)? hopTo = null;
 
-            switch (direction)
+            if (IsBunnyGoingToJupmOutOfTheGrid(theBunny, direction) && IsBunnyLegitToJump(theBunny, direction))
             {
-                case -1:
-                    if (x <= 1) // odavde ako preskoci nesto na levo, ispada iz grida
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        if (_grid[y, x - 1] > 0)  // proveravamo da li je vrednostg prvog susednog polja > 0 i da li je uslov za preskok ispunjen
-                        {
-                            for (int i = x; i >= 0; i--) // trazimo mesto doskoka kroz lup --- sta ako ga ne nadje!!!!!!!
-                            {
-                                if (_grid[y, i] == 0) // trazimo polje doskoka
-                                {
-                                    hopTo = (y, i);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    break;
 
-                case 1:
+                // a da napravimo privremenu listu koju mozemo da testiramo
+                // ubaci koordinate koje ispunjavaju kriterijum
+                // yec je recimo na koord 1 1. Cim se selektuje, da se sakupe validna polja za kretanje
+                // 
 
-                    if (x >= gridSize - 1) // odavde ako preskoci nesto na desno, ispada iz grida
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        if (_grid[y, x + 1] > 0)  // proveravamo da li je vrednostg prvog susednog polja > 0 i da li je uslov za preskok ispunjen
-                        {
-                            for (int i = x; i < gridSize; i++) // trazimo mesto doskoka kroz lup --- sta ako ga ne nadje!!!!!!!
-                            {
-                                if (_grid[y, i] == 0) // trazimo polje doskoka
-                                {
-                                    hopTo = (y, i);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    break;
-
-                case -2:
-
-                    if (y <= 1) // odavde ako preskoci nesto na gore, ispada iz grida
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        if (_grid[y - 1, x] > 0)  // proveravamo da li je vrednostg prvog susednog polja > 0 i da li je uslov za preskok ispunjen
-                        {
-                            for (int i = y; i >= 0; i--) // trazimo mesto doskoka kroz lup --- sta ako ga ne nadje!!!!!!!
-                            {
-                                if (_grid[i, x] == 0) // trazimo polje doskoka
-                                {
-                                    hopTo = (i, x);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    break;
-
-                case 2:
-
-                    if (y >= gridSize - 1) // odavde ako preskoci nesto na dole, ispada iz grida
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        if (_grid[y + 1, x] > 0)  // proveravamo da li je vrednostg prvog susednog polja > 0 i da li je uslov za preskok ispunjen
-                        {
-                            for (int i = y; i < gridSize; i++) // trazimo mesto doskoka kroz lup --- sta ako ga ne nadje!!!!!!!
-                            {
-                                if (_grid[i, x] == 0) // trazimo polje doskoka
-                                {
-                                    hopTo = (i, x);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    break;
+                hopTo = GetPlaceToHopTo(theBunny, direction); 
             }
 
-            if (hopTo.HasValue)
+            if (HopToField(theBunny, hopTo)) // treba videti kako da se selekcija zeca iskoristi i ovde da se ne ubacuje kao paramtar
             {
-                _grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = 0; // // brisemo staru poziciju
-                                                                             //theBunny.CurrentPos = (theBunny.CurrentPos.row, theBunny.CurrentPos.col - i); // upisujemo novu poziciju u instancu zeca
-                theBunny.CurrentPos = (hopTo.Value.a, hopTo.Value.b); // upisujemo novu poziciju u instancu zeca
-                _grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = theBunny.Id; // upisujemo novu poziciju u grid
-
                 movesCount++;
             }
         }
 
-        
-        public void WriteFoxIdToTheGrid(Fox theFox)
+        private bool HopToField(Bunny theBunny, (int a, int b)? hopTo)
+        {
+            if (hopTo.HasValue)
+            {
+                _grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = 0; // Erasing the old Rabbit position from the grid
+                theBunny.CurrentPos = (hopTo.Value.a, hopTo.Value.b); // write in the new position into the rabit instance
+                _grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = theBunny.Id; // write in the new position into the grid
+
+                return true;
+            }
+            return false;
+        }
+
+
+        public void WriteFoxIdToTheGridInitial(Fox theFox)
         {
             _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
             _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
 
             // FoxList.Add(theFox);
         }
-       
+
 
         public void MoveFox(Fox theFox, int direction)
         {

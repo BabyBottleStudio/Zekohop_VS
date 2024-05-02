@@ -256,12 +256,12 @@ namespace Zekohop
 
             foreach (object obj in Levels.BunnyList)
             {
-                grid.WriteBunnyIdToTheGrid((Bunny)obj);
+                grid.WriteBunnyIdToTheGridInitial((Bunny)obj);
             }
 
             foreach (object obj in Levels.FoxList)
             {
-                grid.WriteFoxIdToTheGrid((Fox)obj);
+                grid.WriteFoxIdToTheGridInitial((Fox)obj);
             }
         }
     }
