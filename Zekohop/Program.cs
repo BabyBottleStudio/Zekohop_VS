@@ -22,7 +22,6 @@ namespace Zekohop
                 LoadLevel(grid);
 
                 int currentAnimal = 1;
-                //Console.WriteLine($"{Bunny.BunnyCount}"); // mora da se resetuje broj zeceva
 
                 grid.DisplayGridAdv();
 

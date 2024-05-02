@@ -197,7 +197,7 @@ namespace Zekohop
         public void AddMushroom(Mushroom theMushroom)
         {
             // ako je rupa prekrivena pecurkom, treba je skloniti sa liste
-            (int row, int col) mushroomPos = (theMushroom.GetPos.row, theMushroom.GetPos.col);
+            (int row, int col) mushroomPos = (theMushroom.Position.row, theMushroom.Position.col);
             _grid[mushroomPos.row, mushroomPos.col] = 9;
 
             holeList.Remove(mushroomPos); // ako ga nadje, izbrisace ga, ako ne.. nikom nista

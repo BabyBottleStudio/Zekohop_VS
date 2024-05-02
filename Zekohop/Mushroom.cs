@@ -9,17 +9,12 @@ namespace Zekohop
     class Mushroom
     {
         (int row, int col) _pos;
-        private readonly string spicies = "Mushroom";
-
 
         public Mushroom((int row, int col) pos)
         {
-            GetPos = pos;
+            Position = pos;
         }
 
-        public (int row, int col) GetPos { get => _pos; set => _pos = value; }
-
-        public string Spicies => spicies;
-
+        public (int row, int col) Position { get => _pos; set => _pos = value; }
     }
 }
