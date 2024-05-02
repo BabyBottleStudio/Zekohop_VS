@@ -101,7 +101,7 @@ namespace Zekohop
                     mushroomList.Add(new Mushroom((2, 3)));
                     bunnyList.Add(new Bunny((2, 2)));
                     bunnyList.Add(new Bunny((2, 4)));
-                    bunnyList.Add(new Bunny((0, 2)));
+                    bunnyList.Add(new Bunny((2, 0)));
 
                     break;
 
