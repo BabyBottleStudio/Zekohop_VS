@@ -8,17 +8,18 @@ namespace Zekohop
 {
     class GameGrid
     {
-        int gridSize = 5;
-        int[,] _grid;
+        const int gridSize = 5; // defines the size of the grid
+        int[,] _grid; // game grid 5x5
 
-        public static int movesCount = 0;
+        public static int movesCount = 0; // how many moves has player used to solve the puzzle
 
-        List<(int row, int col)> holeList;
-        List<Bunny> bunnyList = new List<Bunny>();
-        List<Fox> foxList = new List<Fox>();
+        List<(int row, int col)> holeList; // hole list treba da bude fleksibilna lista
 
-        internal List<Fox> FoxList { get => foxList; set => foxList = value; }
-        internal List<Bunny> BunnyList { get => bunnyList; set => bunnyList = value; }
+        //List<Bunny> bunnyList = new List<Bunny>();
+        //List<Fox> foxList = new List<Fox>();
+
+        //internal List<Fox> FoxList { get => foxList; set => foxList = value; }
+        //internal List<Bunny> BunnyList { get => bunnyList; set => bunnyList = value; }
 
 
         /*
@@ -36,9 +37,21 @@ namespace Zekohop
             holeList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
         }
 
+        public void ResetLevel()
+        {
+            //ResetBunniesFoxesCount();
+            holeList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
+            
+            for (int i = 0; i < gridSize; i--)
+            {
+                for (int j = 0; j < gridSize; j--)
+                {
+                    _grid[i, j] = 0;
+                }
+            }
+        }
 
-
-
+        /*
         public void DisplayGrid()
         {
             for (int i = 0; i < gridSize; i++)
@@ -50,6 +63,8 @@ namespace Zekohop
                 Console.WriteLine();
             }
         }
+
+        */
 
 
         public void DisplayGridAdv()
@@ -79,11 +94,11 @@ namespace Zekohop
                     //Enumerable(0, bunnyList.Count).Select
                     int bunnieInTheHoleIndex = 0;
 
-                    for (int k = 0; k < bunnyList.Count; k++)
+                    for (int k = 0; k < Levels.BunnyList.Count; k++)
                     {
-                        if (bunnyList[k].CurrentPos == hole)
+                        if (Levels.BunnyList[k].CurrentPos == hole)
                         {
-                            bunnieInTheHoleIndex = bunnyList[k].Id;
+                            bunnieInTheHoleIndex = Levels.BunnyList[k].Id;
                             break;
                         }
                     }
@@ -196,19 +211,21 @@ namespace Zekohop
 
         public void AddMushroom(Mushroom theMushroom)
         {
-            // ako je rupa prekrivena pecurkom, treba je skloniti sa liste
+            // if the hole is covered with the mushroom, remove it from the list
             (int row, int col) mushroomPos = (theMushroom.Position.row, theMushroom.Position.col);
             _grid[mushroomPos.row, mushroomPos.col] = 9;
 
-            holeList.Remove(mushroomPos); // ako ga nadje, izbrisace ga, ako ne.. nikom nista
+            holeList.Remove(mushroomPos); // if mushroom covers the hole, delete i the hole from the list
         }
 
-        public void AddBunny(Bunny theBunny)
+        
+        public void WriteBunnyIdToTheGrid(Bunny theBunny)
         {
             _grid[theBunny.StartPos.row, theBunny.StartPos.col] = theBunny.Id;
-            BunnyList.Add(theBunny);
+            
+            //BunnyList.Add(theBunny);
         }
-
+        
         public void MoveBunny(Bunny theBunny, int direction)
         {
             // direction
@@ -323,13 +340,15 @@ namespace Zekohop
             }
         }
 
-        public void AddFox(Fox theFox)
+        
+        public void WriteFoxIdToTheGrid(Fox theFox)
         {
             _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
             _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
 
-            FoxList.Add(theFox);
+            // FoxList.Add(theFox);
         }
+       
 
         public void MoveFox(Fox theFox, int direction)
         {
@@ -532,9 +551,19 @@ namespace Zekohop
         public bool IsThereAWin()
         {
             var count = 0;
+            /*
             for (int i = 0; i < bunnyList.Count; i++)
             {
                 if (holeList.Contains(bunnyList[i].CurrentPos))
+                {
+                    count++;
+                }
+            }
+            */
+
+            for (int i = 0; i < Levels.BunnyList.Count; i++)
+            {
+                if (holeList.Contains(Levels.BunnyList[i].CurrentPos))
                 {
                     count++;
                 }

@@ -90,11 +90,11 @@ namespace Zekohop
                     if (currentAnimal > 3)
                     {
                         // mrdas lisice
-                        grid.MoveFox(grid.FoxList[currentAnimal - 1 - 3], userInput);
+                        grid.MoveFox(Levels.FoxList[currentAnimal - 1 - 3], userInput);
                     }
                     else if (currentAnimal > 0 && currentAnimal < 4)
                     {
-                        grid.MoveBunny(grid.BunnyList[currentAnimal - 1], userInput);
+                        grid.MoveBunny(Levels.BunnyList[currentAnimal - 1], userInput);
                         //mrdas zeceve
                     }
                     Console.WriteLine($"{userInput}");
@@ -256,12 +256,12 @@ namespace Zekohop
 
             foreach (object obj in Levels.BunnyList)
             {
-                grid.AddBunny((Bunny)obj);
+                grid.WriteBunnyIdToTheGrid((Bunny)obj);
             }
 
             foreach (object obj in Levels.FoxList)
             {
-                grid.AddFox((Fox)obj);
+                grid.WriteFoxIdToTheGrid((Fox)obj);
             }
         }
     }
