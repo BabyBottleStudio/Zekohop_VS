@@ -14,6 +14,15 @@ namespace Zekohop
         (int x, int y) _currentPos;
 
         private static int bunnyCount;
+        private static List<ConsoleColor> bunnyInterfaceColors = new List<ConsoleColor>
+        {
+            ConsoleColor.White,
+            ConsoleColor.DarkGray,
+            ConsoleColor.Yellow,
+        };
+
+        private ConsoleColor interfaceColor;
+
 
         public Bunny((int x, int y) startPos)
         {
@@ -21,12 +30,15 @@ namespace Zekohop
             _currentPos = startPos;
             bunnyCount++;
             _id = BunnyCount;
+            InterfaceColor = bunnyInterfaceColors[Id-1];
+
         }
 
         public (int row, int col) CurrentPos { get => _currentPos; set => _currentPos = value; }
         public int Id { get => _id;}
         public (int row, int col) StartPos { get => _startPos; set => _startPos = value; }
         public static int BunnyCount { get => bunnyCount; set => bunnyCount = value; }
+        public ConsoleColor InterfaceColor { get => interfaceColor; set => interfaceColor = value; }
 
         public static void ResetBunniesCount()
         {

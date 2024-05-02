@@ -119,9 +119,7 @@ namespace Zekohop
 
         static int UserInput(int currentAnimal, out int selectedAnimal)
         {
-            Console.WriteLine("Type in the number to select the rabbit or the fox.");
-            Console.WriteLine("1, 2 or 3 for rabbits");
-            Console.WriteLine("4 or 5 for fox");
+            Interface.GameMenu();
 
             // Korisnik unosi broj ili strelice.
             // kad unese broj, ta figura ostaje selektovana dok se ne unese drugi broj. Strelice u medjuvremenu pomeraju selektovane objekte.

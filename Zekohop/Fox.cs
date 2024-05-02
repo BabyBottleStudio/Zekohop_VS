@@ -8,11 +8,20 @@ namespace Zekohop
 {
     class Fox
     {
+        
         private static int foxCount;
         int foxId;
         (int row, int col) _headPos;
         (int row, int col) _tailPos;
         string _orientation;
+
+        private static List<ConsoleColor> foxInterfaceColors = new List<ConsoleColor>
+        {
+            ConsoleColor.Red,
+            ConsoleColor.DarkYellow
+        };
+
+        private ConsoleColor interfaceColor;
 
 
         public Fox((int row, int col) headPos, string orientation)  
@@ -35,8 +44,10 @@ namespace Zekohop
                     break;
             }
 
+           
             FoxCount++;
             FoxId = FoxCount + 3;
+            InterfaceColor = foxInterfaceColors[FoxCount - 1];
         }
 
         public static int FoxCount
@@ -53,6 +64,7 @@ namespace Zekohop
         
         public string Orientation
             { get => _orientation; set => _orientation = value; }
+        public ConsoleColor InterfaceColor { get => interfaceColor; set => interfaceColor = value; }
 
         public static void ResetFoxCount()
         {
