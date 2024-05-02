@@ -9,14 +9,16 @@ namespace Zekohop
     class GameGrid
     {
         const int gridSize = 5; // defines the size of the grid
-        int[,] _grid; // game grid 5x5
+        static int[,] _grid; // game grid 5x5
 
         public static int movesCount = 0; // how many moves has player used to solve the puzzle
 
         List<(int row, int col)> holeList; // hole list treba da bude fleksibilna lista
 
-        //public int selectedAnimal; deliberate error!
-        //public int movementDirection;
+        public static int selectedAnimal;
+        public static Bunny currentBunny;
+        public static Fox currentFox;
+        public static int userInput;
 
         /*
         00 01 02 03 04
@@ -46,6 +48,33 @@ namespace Zekohop
                 }
             }
         }
+
+        public static void SetSelectedAnimal()
+        {
+            if (selectedAnimal > 3)
+            {
+                currentFox =  Levels.FoxList[GameGrid.selectedAnimal - 1 - 3];
+            }
+            else if (GameGrid.selectedAnimal > 0 && GameGrid.selectedAnimal < 4)
+            {
+                currentBunny =  Levels.BunnyList[GameGrid.selectedAnimal - 1];
+            }
+        }        
+
+        public static void MoveSelectedAnimal()
+        {
+            if (selectedAnimal > 3)
+            {
+                // mrdas lisice
+                MoveFox(Levels.FoxList[GameGrid.selectedAnimal - 1 - 3], userInput);
+            }
+            else if (GameGrid.selectedAnimal > 0 && GameGrid.selectedAnimal < 4)
+            {
+                MoveBunny(Levels.BunnyList[GameGrid.selectedAnimal - 1], userInput);
+                //mrdas zeceve
+            }
+        }
+
 
 
         public void DisplayGridAdv()
@@ -190,15 +219,23 @@ namespace Zekohop
             Console.WriteLine($"Number of moves {movesCount}");
         }
 
+
+
+
         public void AddMushroom(Mushroom theMushroom)
         {
             // if the hole is covered with the mushroom, remove it from the list
             (int row, int col) mushroomPos = (theMushroom.Position.row, theMushroom.Position.col);
             _grid[mushroomPos.row, mushroomPos.col] = 9;
 
-            holeList.Remove(mushroomPos); // if mushroom covers the hole, delete i the hole from the list
+            holeList.Remove(mushroomPos); // if mushroom covers the hole, delete the hole from the list
         }
 
+
+
+        /***************************
+         ***   B U N N Y ! ! !   ***
+         ***************************/
 
         public void WriteBunnyIdToTheGridInitial(Bunny theBunny)
         {
@@ -207,10 +244,11 @@ namespace Zekohop
             //BunnyList.Add(theBunny);
         }
 
-        private bool IsBunnyGoingToJupmOutOfTheGrid(Bunny theBunny, int direction) // da li je ovaj test neophodan ili samo mi treba bolja logika dole u funkcijijijiji. Ili ovaj test sprecava dalje proracune ako se nije ispunio
+        private static bool IsBunnyGoingToJupmOutOfTheGrid(int direction) // da li je ovaj test neophodan ili samo mi treba bolja logika dole u funkcijijijiji. Ili ovaj test sprecava dalje proracune ako se nije ispunio
         {
+            //SetSelectedAnimal();
             // Initial test if the bunny is going to jump out of the grid
-            (int y, int x) = theBunny.CurrentPos;
+            (int y, int x) = currentBunny.CurrentPos;
 
             switch (direction)
             {
@@ -248,8 +286,7 @@ namespace Zekohop
             return true;
         }
 
-
-        private bool IsBunnyLegitToJump(Bunny theBunny, int direction) // this method checks if the selected bunny is going to jump over the fox, mushroom or another bunny and retunrs bool
+        private static bool IsBunnyLegitToJump(Bunny theBunny, int direction) // this method checks if the selected bunny is going to jump over the fox, mushroom or another bunny and retunrs bool
         {
             // values are inverted because they have more logic that way. 
             (int y, int x) = theBunny.CurrentPos; // ovo isto napraviti kao public parametar 
@@ -287,7 +324,7 @@ namespace Zekohop
             return false;
         }
 
-        private (int a, int b)? GetPlaceToHopTo(Bunny theBunny, int direction)
+        private static (int a, int b)? GetPlaceToHopTo(Bunny theBunny, int direction)
         {
             (int y, int x) = theBunny.CurrentPos; // ovo isto napraviti kao public parametar 
 
@@ -335,7 +372,8 @@ namespace Zekohop
             }
             return null;
         }
-        public void MoveBunny(Bunny theBunny, int direction)
+
+        public static void MoveBunny(Bunny theBunny, int direction)
         {
             // direction
             // <= -1  1 =>
@@ -348,7 +386,7 @@ namespace Zekohop
 
             (int a, int b)? hopTo = null;
 
-            if (IsBunnyGoingToJupmOutOfTheGrid(theBunny, direction) && IsBunnyLegitToJump(theBunny, direction))
+            if (IsBunnyGoingToJupmOutOfTheGrid(direction) && IsBunnyLegitToJump(theBunny, direction))
             {
 
                 // a da napravimo privremenu listu koju mozemo da testiramo
@@ -356,7 +394,7 @@ namespace Zekohop
                 // yec je recimo na koord 1 1. Cim se selektuje, da se sakupe validna polja za kretanje
                 // 
 
-                hopTo = GetPlaceToHopTo(theBunny, direction); 
+                hopTo = GetPlaceToHopTo(theBunny, direction);
             }
 
             if (HopToField(theBunny, hopTo)) // treba videti kako da se selekcija zeca iskoristi i ovde da se ne ubacuje kao paramtar
@@ -365,7 +403,7 @@ namespace Zekohop
             }
         }
 
-        private bool HopToField(Bunny theBunny, (int a, int b)? hopTo)
+        static bool HopToField(Bunny theBunny, (int a, int b)? hopTo)
         {
             if (hopTo.HasValue)
             {
@@ -379,6 +417,14 @@ namespace Zekohop
         }
 
 
+
+
+
+        /***********************
+         ***   F O X ! ! !   ***
+         ***********************/
+
+
         public void WriteFoxIdToTheGridInitial(Fox theFox)
         {
             _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
@@ -388,7 +434,7 @@ namespace Zekohop
         }
 
 
-        public void MoveFox(Fox theFox, int direction)
+        public static void MoveFox(Fox theFox, int direction)
         {
             // horizontalne lisice
 

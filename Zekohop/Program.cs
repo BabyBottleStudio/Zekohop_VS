@@ -21,7 +21,7 @@ namespace Zekohop
 
                 LoadLevel(grid);
 
-                int currentAnimal = 1;
+                GameGrid.selectedAnimal = 1;
 
                 grid.DisplayGridAdv();
 
@@ -29,7 +29,9 @@ namespace Zekohop
 
                 while (true)
                 {
-                    int userInput = UserInput(currentAnimal, out currentAnimal);
+                    int userInput = UserInput(GameGrid.selectedAnimal, out GameGrid.selectedAnimal);
+
+                    GameGrid.userInput = userInput;
 
                     if (userInput == -66) // r
                     {
@@ -86,17 +88,9 @@ namespace Zekohop
                         break;
                     }
 
+                    GameGrid.SetSelectedAnimal();
+                    GameGrid.MoveSelectedAnimal();
 
-                    if (currentAnimal > 3)
-                    {
-                        // mrdas lisice
-                        grid.MoveFox(Levels.FoxList[currentAnimal - 1 - 3], userInput);
-                    }
-                    else if (currentAnimal > 0 && currentAnimal < 4)
-                    {
-                        grid.MoveBunny(Levels.BunnyList[currentAnimal - 1], userInput);
-                        //mrdas zeceve
-                    }
                     Console.WriteLine($"{userInput}");
 
                     Console.Clear();
