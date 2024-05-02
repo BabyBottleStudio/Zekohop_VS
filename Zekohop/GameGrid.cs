@@ -8,17 +8,22 @@ namespace Zekohop
 {
     class GameGrid
     {
-        const int gridSize = 5; // defines the size of the grid
+        private const int gridSize = 5; // defines the size of the grid
         static int[,] _grid; // game grid 5x5
 
         public static int movesCount = 0; // how many moves has player used to solve the puzzle
 
-        List<(int row, int col)> holeList; // hole list treba da bude fleksibilna lista
+        static List<(int row, int col)> holeList; // hole list treba da bude fleksibilna lista
 
         public static int selectedAnimal;
         public static Bunny currentBunny;
         public static Fox currentFox;
         public static int userInput;
+
+        public static int GridSize => gridSize;
+
+        public static List<(int row, int col)> HoleList { get => holeList; set => holeList = value; }
+        public static int[,] Grid { get => _grid; set => _grid = value; }
 
         /*
         00 01 02 03 04
@@ -30,21 +35,21 @@ namespace Zekohop
 
         public GameGrid()
         {
-            _grid = new int[gridSize, gridSize];
-            _grid.Initialize();
-            holeList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
+            Grid = new int[GridSize, GridSize];
+            Grid.Initialize();
+            HoleList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
         }
 
         public void ResetLevel()
         {
             //ResetBunniesFoxesCount();
-            holeList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
+            HoleList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
 
-            for (int i = 0; i < gridSize; i--)
+            for (int i = 0; i < GridSize; i--)
             {
-                for (int j = 0; j < gridSize; j--)
+                for (int j = 0; j < GridSize; j--)
                 {
-                    _grid[i, j] = 0;
+                    Grid[i, j] = 0;
                 }
             }
         }
@@ -75,7 +80,7 @@ namespace Zekohop
             }
         }
 
-
+   /*
 
         public void DisplayGridAdv()
         {
@@ -219,16 +224,16 @@ namespace Zekohop
             Console.WriteLine($"Number of moves {movesCount}");
         }
 
+        */
+     
 
-
-
-        public void AddMushroom(Mushroom theMushroom)
+        public static void AddMushroom(Mushroom theMushroom)
         {
             // if the hole is covered with the mushroom, remove it from the list
             (int row, int col) mushroomPos = (theMushroom.Position.row, theMushroom.Position.col);
-            _grid[mushroomPos.row, mushroomPos.col] = 9;
+            Grid[mushroomPos.row, mushroomPos.col] = 9;
 
-            holeList.Remove(mushroomPos); // if mushroom covers the hole, delete the hole from the list
+            HoleList.Remove(mushroomPos); // if mushroom covers the hole, delete the hole from the list
         }
 
 
@@ -237,9 +242,9 @@ namespace Zekohop
          ***   B U N N Y ! ! !   ***
          ***************************/
 
-        public void WriteBunnyIdToTheGridInitial(Bunny theBunny)
+        public static  void WriteBunnyIdToTheGridInitial(Bunny theBunny)
         {
-            _grid[theBunny.StartPos.row, theBunny.StartPos.col] = theBunny.Id;
+            Grid[theBunny.StartPos.row, theBunny.StartPos.col] = theBunny.Id;
 
             //BunnyList.Add(theBunny);
         }
@@ -261,7 +266,7 @@ namespace Zekohop
 
                 case 1:
 
-                    if (x >= gridSize - 1) // if a bunny jumps from here to the right, it will jump out of the grid; odavde ako preskoci nesto na desno, ispada iz grida
+                    if (x >= GridSize - 1) // if a bunny jumps from here to the right, it will jump out of the grid; odavde ako preskoci nesto na desno, ispada iz grida
                     {
                         return false;
                     }
@@ -277,7 +282,7 @@ namespace Zekohop
 
                 case 2:
 
-                    if (y >= gridSize - 1) //  if a bunny jumps down from here, it will jump out of the grid; odavde ako preskoci nesto na dole, ispada iz grida
+                    if (y >= GridSize - 1) //  if a bunny jumps down from here, it will jump out of the grid; odavde ako preskoci nesto na dole, ispada iz grida
                     {
                         return false;
                     }
@@ -294,28 +299,28 @@ namespace Zekohop
             switch (direction)
             {
                 case -1:
-                    if (_grid[y, x - 1] > 0) // if it jumps to the left, will it jump over something or not
+                    if (Grid[y, x - 1] > 0) // if it jumps to the left, will it jump over something or not
                     {
                         return true;
                     }
                     break;
 
                 case 1:
-                    if (_grid[y, x + 1] > 0)  // if it jumps to the right, will it jump over something or not
+                    if (Grid[y, x + 1] > 0)  // if it jumps to the right, will it jump over something or not
                     {
                         return true;
                     }
                     break;
 
                 case -2:
-                    if (_grid[y - 1, x] > 0)  // if it jumps upwards, will it jump over something or not
+                    if (Grid[y - 1, x] > 0)  // if it jumps upwards, will it jump over something or not
                     {
                         return true;
                     }
                     break;
 
                 case 2:
-                    if (_grid[y + 1, x] > 0) // if it jumps downwards, will it jump over something or not
+                    if (Grid[y + 1, x] > 0) // if it jumps downwards, will it jump over something or not
                     {
                         return true;
                     }
@@ -333,7 +338,7 @@ namespace Zekohop
                 case -1:
                     for (int i = x; i >= 0; i--) // trazimo mesto doskoka kroz lup i+direction
                     {
-                        if (_grid[y, i] == 0) // trazimo polje doskoka
+                        if (Grid[y, i] == 0) // trazimo polje doskoka
                         {
                             return (y, i);
                         }
@@ -341,9 +346,9 @@ namespace Zekohop
                     break;
 
                 case 1:
-                    for (int i = x; i < gridSize; i++) // trazimo mesto doskoka kroz lup 
+                    for (int i = x; i < GridSize; i++) // trazimo mesto doskoka kroz lup 
                     {
-                        if (_grid[y, i] == 0) // trazimo polje doskoka
+                        if (Grid[y, i] == 0) // trazimo polje doskoka
                         {
                             return (y, i);
                         }
@@ -353,7 +358,7 @@ namespace Zekohop
                 case -2:
                     for (int i = y; i >= 0; i--) // trazimo mesto doskoka kroz lup 
                     {
-                        if (_grid[i, x] == 0) // trazimo polje doskoka
+                        if (Grid[i, x] == 0) // trazimo polje doskoka
                         {
                             return (i, x);
                         }
@@ -361,9 +366,9 @@ namespace Zekohop
                     break;
 
                 case 2:
-                    for (int i = y; i < gridSize; i++) // trazimo mesto doskoka kroz lup --- sta ako ga ne nadje!!!!!!!
+                    for (int i = y; i < GridSize; i++) // trazimo mesto doskoka kroz lup --- sta ako ga ne nadje!!!!!!!
                     {
-                        if (_grid[i, x] == 0) // trazimo polje doskoka
+                        if (Grid[i, x] == 0) // trazimo polje doskoka
                         {
                             return (i, x);
                         }
@@ -407,9 +412,9 @@ namespace Zekohop
         {
             if (hopTo.HasValue)
             {
-                _grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = 0; // Erasing the old Rabbit position from the grid
+                Grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = 0; // Erasing the old Rabbit position from the grid
                 theBunny.CurrentPos = (hopTo.Value.a, hopTo.Value.b); // write in the new position into the rabit instance
-                _grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = theBunny.Id; // write in the new position into the grid
+                Grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = theBunny.Id; // write in the new position into the grid
 
                 return true;
             }
@@ -425,10 +430,10 @@ namespace Zekohop
          ***********************/
 
 
-        public void WriteFoxIdToTheGridInitial(Fox theFox)
+        public static void WriteFoxIdToTheGridInitial(Fox theFox)
         {
-            _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-            _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+            Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+            Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
 
             // FoxList.Add(theFox);
         }
@@ -449,16 +454,16 @@ namespace Zekohop
                         // mrda glavu u levo, rep prati
                         if (theFox.HeadPos.col - 1 >= 0) // ako nije out of bounds
                         {
-                            if (_grid[theFox.HeadPos.row, theFox.HeadPos.col - 1] == 0) // ako polje sa leve strane je prazno
+                            if (Grid[theFox.HeadPos.row, theFox.HeadPos.col - 1] == 0) // ako polje sa leve strane je prazno
                             {
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
 
                                 theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col - 1);
                                 theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col - 1);
 
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
                                 movesCount++;
 
                             }
@@ -469,18 +474,18 @@ namespace Zekohop
                         if (theFox.TailPos.col - 1 >= 0) // ako nije out of bounds
                         {
                             Console.WriteLine($"Direction = {direction}. Nisam out of bounds! mrda rep glava prati");
-                            if (_grid[theFox.TailPos.row, theFox.TailPos.col - 1] == 0) // ako polje sa desne strane je prazno
+                            if (Grid[theFox.TailPos.row, theFox.TailPos.col - 1] == 0) // ako polje sa desne strane je prazno
                             {
                                 Console.WriteLine($"Ispunjeni uslovi za pomeranje!");
                                 //var temp = new Tuple<int, int>(0, -1);
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
 
                                 theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col - 1);
                                 theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col - 1);
 
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
                                 movesCount++;
                             }
                         }
@@ -491,22 +496,22 @@ namespace Zekohop
                 case 1:
                     if (theFox.Orientation == "Horizontal Left")  // glava gleda u negativan x
                     {
-                        if (theFox.TailPos.col + 1 < gridSize) // ako nije out of bounds
+                        if (theFox.TailPos.col + 1 < GridSize) // ako nije out of bounds
                         {
                             Console.WriteLine($"Direction = {direction}. Nisam out of bounds! mrda rep glava prati");
-                            if (_grid[theFox.TailPos.row, theFox.TailPos.col + 1] == 0) // ako polje sa desne strane je prazno
+                            if (Grid[theFox.TailPos.row, theFox.TailPos.col + 1] == 0) // ako polje sa desne strane je prazno
                             {
                                 Console.WriteLine($"Ispunjeni uslovi za pomeranje!");
                                 //var temp = new Tuple<int, int>(0, -1);
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
 
 
                                 theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col + 1);
                                 theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col + 1);
 
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
                                 movesCount++;
                             }
                         }
@@ -514,22 +519,22 @@ namespace Zekohop
                     else if (theFox.Orientation == "Horizontal Right")
                     {
                         // mrda glavu u desno, rep prati
-                        if (theFox.HeadPos.col + 1 < gridSize) // ako nije out of bounds
+                        if (theFox.HeadPos.col + 1 < GridSize) // ako nije out of bounds
                         {
                             Console.WriteLine($"Direction = {direction}. Nisam out of bounds!");
 
-                            if (_grid[theFox.HeadPos.row, theFox.HeadPos.col + 1] == 0) // ukoliko je polje sa desne strane prazno
+                            if (Grid[theFox.HeadPos.row, theFox.HeadPos.col + 1] == 0) // ukoliko je polje sa desne strane prazno
                             {
                                 Console.WriteLine($"Ispunjeni uslovi za pomeranje! mrda glavu rep prati");
                                 // prepravi vrednost grida na nulu 
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
 
                                 theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col + 1);
                                 theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col + 1);
 
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
                                 movesCount++;
                             }
                         }
@@ -544,16 +549,16 @@ namespace Zekohop
                         // ide glavom na gore
                         if (theFox.HeadPos.row - 1 >= 0) // ako nije out of bounds
                         {
-                            if (_grid[theFox.HeadPos.row - 1, theFox.HeadPos.col] == 0) // ako polje je polje iznad prazno
+                            if (Grid[theFox.HeadPos.row - 1, theFox.HeadPos.col] == 0) // ako polje je polje iznad prazno
                             {
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
 
                                 theFox.HeadPos = (theFox.HeadPos.row - 1, theFox.HeadPos.col);
                                 theFox.TailPos = (theFox.TailPos.row - 1, theFox.TailPos.col);
 
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
                                 movesCount++;
 
                             }
@@ -564,16 +569,16 @@ namespace Zekohop
                         // ide dupetom na gore
                         if (theFox.TailPos.row - 1 >= 0) // ako nije out of bounds
                         {
-                            if (_grid[theFox.TailPos.row - 1, theFox.TailPos.col] == 0) // ako polje sa desne strane je prazno
+                            if (Grid[theFox.TailPos.row - 1, theFox.TailPos.col] == 0) // ako polje sa desne strane je prazno
                             {
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
 
                                 theFox.HeadPos = (theFox.HeadPos.row - 1, theFox.HeadPos.col);
                                 theFox.TailPos = (theFox.TailPos.row - 1, theFox.TailPos.col);
 
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
                                 movesCount++;
                             }
                         }
@@ -586,20 +591,20 @@ namespace Zekohop
                     if (theFox.Orientation == "Vertical Up") // gleda na gore
                     {
                         // ide dupetom na dole
-                        if (theFox.TailPos.row + 1 < gridSize) // ako nije out of bounds
+                        if (theFox.TailPos.row + 1 < GridSize) // ako nije out of bounds
                         {
                             Console.WriteLine($"Direction = {direction}. Nisam out of bounds! mrda rep glava prati");
-                            if (_grid[theFox.TailPos.row + 1, theFox.TailPos.col] == 0) // ako polje sa desne strane je prazno
+                            if (Grid[theFox.TailPos.row + 1, theFox.TailPos.col] == 0) // ako polje sa desne strane je prazno
                             {
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
 
 
                                 theFox.HeadPos = (theFox.HeadPos.row + 1, theFox.HeadPos.col);
                                 theFox.TailPos = (theFox.TailPos.row + 1, theFox.TailPos.col);
 
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
 
                                 movesCount++;
                             }
@@ -610,19 +615,19 @@ namespace Zekohop
                         // ide glavom na dole
 
                         // mrda glavu u desno, rep prati
-                        if (theFox.HeadPos.row + 1 < gridSize) // ako nije out of bounds
+                        if (theFox.HeadPos.row + 1 < GridSize) // ako nije out of bounds
                         {
 
-                            if (_grid[theFox.HeadPos.row + 1, theFox.HeadPos.col] == 0) // ukoliko je polje sa desne strane prazno
+                            if (Grid[theFox.HeadPos.row + 1, theFox.HeadPos.col] == 0) // ukoliko je polje sa desne strane prazno
                             {
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
 
                                 theFox.HeadPos = (theFox.HeadPos.row + 1, theFox.HeadPos.col);
                                 theFox.TailPos = (theFox.TailPos.row + 1, theFox.TailPos.col);
 
-                                _grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                _grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
                                 movesCount++;
                             }
                         }
@@ -632,22 +637,13 @@ namespace Zekohop
 
         }
 
-        public bool IsThereAWin()
+        public static bool IsThereAWin()
         {
             var count = 0;
-            /*
-            for (int i = 0; i < bunnyList.Count; i++)
-            {
-                if (holeList.Contains(bunnyList[i].CurrentPos))
-                {
-                    count++;
-                }
-            }
-            */
 
             for (int i = 0; i < Levels.BunnyList.Count; i++)
             {
-                if (holeList.Contains(Levels.BunnyList[i].CurrentPos))
+                if (HoleList.Contains(Levels.BunnyList[i].CurrentPos))
                 {
                     count++;
                 }
@@ -661,7 +657,7 @@ namespace Zekohop
             return false;
         }
 
-        public void ResetBunniesFoxesCount()
+        public static void ResetBunniesFoxesCount()
         {
             Fox.ResetFoxCount();
             Bunny.ResetBunniesCount();
