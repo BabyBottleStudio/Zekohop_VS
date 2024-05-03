@@ -14,6 +14,7 @@ namespace Zekohop
         (int row, int col) _headPos;
         (int row, int col) _tailPos;
         string _orientation;
+        string displayIcon;
 
         private static List<ConsoleColor> foxInterfaceColors = new List<ConsoleColor>
         {
@@ -32,15 +33,19 @@ namespace Zekohop
             {
                 case "Horizontal Left":                             // glava gleda u negativan x
                     TailPos = (HeadPos.row, HeadPos.col + 1);
+                    DisplayIcon = " < ";
                     break;
                 case "Horizontal Right":                            // glava gleda u pozitivan x           
                     TailPos = (HeadPos.row, HeadPos.col - 1);
+                    DisplayIcon = " > ";
                     break;
                 case "Vertical Up":                                 // glava gleda na gore            
                     TailPos = (HeadPos.row + 1, HeadPos.col);
+                    DisplayIcon = " ^ ";
                     break;
                 case "Vertical Down":                               // glava gleda na dole           
                     TailPos = (HeadPos.row - 1, HeadPos.col);
+                    DisplayIcon = " V ";
                     break;
             }
 
@@ -65,6 +70,7 @@ namespace Zekohop
         public string Orientation
         { get => _orientation; set => _orientation = value; }
         public ConsoleColor InterfaceColor { get => interfaceColor; set => interfaceColor = value; }
+        public string DisplayIcon { get => displayIcon; set => displayIcon = value; }
 
         public static void ResetFoxCount()
         {

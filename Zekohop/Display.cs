@@ -16,16 +16,20 @@ namespace Zekohop
             Console.WriteLine($"Level {Level.LevelIndex}.   >>{Level.NumberOfMOves}.");
         }
 
-        public static void Win()
+        public static void LevelWin()
         {
             Console.WriteLine();
             Console.WriteLine($"> >  L E V E L  - {Level.LevelIndex} -  C L E A R  < < ");
-            Console.WriteLine($"       You used {GameGrid.MovesCount} moves.");
-            // ubaci info o tome koliko je idealno za svaki nivo
+            WriteInColor($"        Minimum moves needed: {Level.NumberOfMOves}.", ConsoleColor.DarkGray);
+            WriteInColor($"             Moves used: {GameGrid.MovesCount}.", ConsoleColor.DarkGray);
             Console.WriteLine();
-            Console.WriteLine($"Press any key to go to the level {Level.LevelIndex + 1}.");
+            Console.WriteLine();
+
+            Console.WriteLine($"Press any key for the LEVEL - {Level.LevelIndex + 1} -");
             Console.ReadKey();
         }
+
+
 
         public static void GameMenu()
         {
@@ -93,6 +97,8 @@ namespace Zekohop
 
             Console.ResetColor();
         }
+
+
 
         public static void GridAdvanced()
         {
@@ -200,23 +206,15 @@ namespace Zekohop
                             break;
 
                         case 4:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(" V ");
-                            Console.ResetColor();
+                            DrawFoxes(0);
                             break;
                         case 5:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write(" X ");
-                            Console.ResetColor();
+                            DrawFoxes(Fox.FoxCount - 1);
                             break;
 
                         case 9:
                             Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.Write(" @ ");
-                            Console.ResetColor();
+                            WriteInColor($" {Mushroom.Icon} ", Mushroom.IconColor, false);
                             break;
                     }
 
@@ -231,6 +229,14 @@ namespace Zekohop
 
             }
             NumberOfMoves();
+        }
+
+
+
+        private static void DrawFoxes(int colorIndex)
+        {
+            Console.Write("|");
+            WriteInColor($"{Level.FoxList[colorIndex].DisplayIcon}", Level.FoxList[colorIndex].InterfaceColor, false);
         }
 
         public static void NumberOfMoves()

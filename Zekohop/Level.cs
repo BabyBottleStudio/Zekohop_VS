@@ -11,13 +11,15 @@ namespace Zekohop
     {
         // this class handles the data levels contain
         // it has 3 lists, for each type of objects in the game. Set level data handles the lists and creates instances with the proper coordinates. Impossible stuff like havint two objects on the same coordinate is not handled. Maybe if a level creator is added later :)
-
+        private const int _allLevelsCount = 60;
         private static List<Mushroom> mushroomList = new List<Mushroom>();
         private static List<Bunny> bunnyList = new List<Bunny>();
         private static List<Fox> foxList = new List<Fox>();
 
         private static int levelIndex;
         private static int numberOfMOves;
+
+        public static int AllLevelsCount => _allLevelsCount;
 
         internal static List<Mushroom> MushroomList { get => mushroomList; set => mushroomList = value; }
         internal static List<Bunny> BunnyList { get => bunnyList; set => bunnyList = value; }
@@ -32,6 +34,25 @@ namespace Zekohop
 
 
 
+        public static void LoadLevel()
+        {
+            SetLevelData();
+
+            foreach (object obj in Level.MushroomList)
+            {
+                Mushroom.AddMushroom((Mushroom)obj);
+            }
+
+            foreach (object obj in Level.BunnyList)
+            {
+                Bunny.WriteBunnyIdToTheGridInitial((Bunny)obj);
+            }
+
+            foreach (object obj in Level.FoxList)
+            {
+                Fox.WriteFoxIdToTheGridInitial((Fox)obj);
+            }
+        }
 
 
         internal static void SetLevelData()

@@ -8,6 +8,9 @@ namespace Zekohop
 {
     class Mushroom
     {
+        public readonly static string Icon = "Q";
+        public readonly static ConsoleColor IconColor = ConsoleColor.Magenta;
+        
         (int row, int col) _pos;
 
         public Mushroom((int row, int col) pos)

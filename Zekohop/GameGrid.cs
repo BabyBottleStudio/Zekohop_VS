@@ -47,6 +47,7 @@ namespace Zekohop
             HoleList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
         }
 
+        /*
         public void ResetLevel()
         {
             //ResetBunniesFoxesCount();
@@ -60,18 +61,19 @@ namespace Zekohop
                 }
             }
         }
+        */
 
         public static void SetSelectedAnimal()
         {
             if (selectedAnimal > 3)
             {
-                currentFox =  Level.FoxList[GameGrid.selectedAnimal - 1 - 3];
+                currentFox = Level.FoxList[GameGrid.selectedAnimal - 1 - 3];
             }
             else if (GameGrid.selectedAnimal > 0 && GameGrid.selectedAnimal < 4)
             {
-                currentBunny =  Level.BunnyList[GameGrid.selectedAnimal - 1];
+                currentBunny = Level.BunnyList[GameGrid.selectedAnimal - 1];
             }
-        }        
+        }
 
         public static void MoveSelectedAnimal()
         {
@@ -87,17 +89,21 @@ namespace Zekohop
             }
         }
 
- 
-     
-      
+
+
+
 
 
 
 
         public static bool IsThereAWin()
         {
-            var count = 0;
+            int count = Level.BunnyList.Count(bunny => HoleList.Contains(bunny.CurrentPos));
+            return count == Bunny.BunnyCount;
 
+
+/*
+            var count = 0;
             for (int i = 0; i < Level.BunnyList.Count; i++)
             {
                 if (HoleList.Contains(Level.BunnyList[i].CurrentPos))
@@ -110,8 +116,8 @@ namespace Zekohop
             {
                 return true;
             }
-
             return false;
+*/
         }
 
         public static void ResetBunniesFoxesCount()

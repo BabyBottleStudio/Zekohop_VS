@@ -19,7 +19,7 @@ namespace Zekohop
 
                 GameGrid.ResetBunniesFoxesCount();
 
-                LoadLevel();
+                Level.LoadLevel();
 
                 GameGrid.selectedAnimal = 1;
 
@@ -53,7 +53,7 @@ namespace Zekohop
                         int userChoice;
                         do
                         {
-                            Console.WriteLine("Enter the level you want to play! (1 - 60)");
+                            Console.WriteLine($"Enter the level you want to play! (1 - {Level.AllLevelsCount})");
                         }
                         while (!int.TryParse(Console.ReadLine(), out userChoice));
 
@@ -61,9 +61,9 @@ namespace Zekohop
                         {
                             userChoice = 1;
                         }
-                        else if (userChoice > 60)
+                        else if (userChoice > Level.AllLevelsCount)
                         {
-                            userChoice = 60;
+                            userChoice = Level.AllLevelsCount;
                         }
 
                         Level.LevelIndex = userChoice;
@@ -74,14 +74,14 @@ namespace Zekohop
                         Level.LevelIndex--;
                         if (Level.LevelIndex < 1)
                         {
-                            Level.LevelIndex = 60;
+                            Level.LevelIndex = Level.AllLevelsCount;
                         }
                         break;
                     }
                     else if (userInput == -24) // d
                     {
                         Level.LevelIndex++;
-                        if (Level.LevelIndex > 60)
+                        if (Level.LevelIndex > Level.AllLevelsCount)
                         {
                             Level.LevelIndex = 1;
                         }
@@ -98,33 +98,29 @@ namespace Zekohop
 
                     if (GameGrid.IsThereAWin())
                     {
-                        Display.Win();
+                        Display.LevelWin();
                         Level.LevelIndex++;
                         break;
                     }
                 }
 
             }
-
-
-
-
-
-
-
         }
 
         static int UserInput(int currentAnimal, out int selectedAnimal)
         {
             Display.GameMenu();
 
-            // Korisnik unosi broj ili strelice.
-            // kad unese broj, ta figura ostaje selektovana dok se ne unese drugi broj. Strelice u medjuvremenu pomeraju selektovane objekte.
+            // User can input arrow keys, number keys 1 - 5, A,S,D 
+            // numbers are changing the selection of a current animal in the scene
+            // arrow keys are moving the selection
+            // a - loads the previous level
+            // s - opens the menu where you type in the level number you want to play.
+            // d - loads the next level
 
-            selectedAnimal = currentAnimal; // na ovaj nacin se unosi koja je trenutna selekcija, i menja se samo ako korisnik unese broj.
+            selectedAnimal = currentAnimal; // this way we change the current selection and it changes only if user enters a new number.; na ovaj nacin se unosi koja je trenutna selekcija, i menja se samo ako korisnik unese broj.
 
             ConsoleKeyInfo keyInfo = Console.ReadKey();
-
 
             switch (keyInfo.Key)
             {
@@ -178,27 +174,6 @@ namespace Zekohop
                     break;
             }
             return 0;
-        }
-
-
-        static void LoadLevel()
-        {
-            Level.SetLevelData();
-
-            foreach (object obj in Level.MushroomList)
-            {
-                Mushroom.AddMushroom((Mushroom)obj);
-            }
-
-            foreach (object obj in Level.BunnyList)
-            {
-                Bunny.WriteBunnyIdToTheGridInitial((Bunny)obj);
-            }
-
-            foreach (object obj in Level.FoxList)
-            {
-                Fox.WriteFoxIdToTheGridInitial((Fox)obj);
-            }
         }
     }
 }
