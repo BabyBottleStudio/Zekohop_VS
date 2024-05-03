@@ -47,7 +47,7 @@
     <Compile Include="Fox.cs" />
     <Compile Include="GameGrid.cs" />
     <Compile Include="Display.cs" />
-    <Compile Include="Levels.cs" />
+    <Compile Include="Level.cs" />
     <Compile Include="Mushroom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

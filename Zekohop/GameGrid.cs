@@ -80,153 +80,9 @@ namespace Zekohop
             }
         }
 
-   /*
-
-        public void DisplayGridAdv()
-        {
-            Console.WriteLine($"Level {Levels.LevelIndex}. >>{Levels.NumberOfMOves}.");
-            for (int i = 0; i < gridSize; i++)
-            {
-
-                if (i == 0)
-                {
-                    Console.WriteLine(" --- --- --- --- --- ");
-                }
-
-                else
-                {
-                    Console.WriteLine("|---| - |---| - |---|");
-                }
-
-
-
-                for (int j = 0; j < gridSize; j++)
-                {
-                    // test da li je rupa u pitanju
-                    // kako resiti kad je zec u rupi?
-                    var hole = (i, j);
-
-                    //Enumerable(0, bunnyList.Count).Select
-                    int bunnieInTheHoleIndex = 0;
-
-                    for (int k = 0; k < Levels.BunnyList.Count; k++)
-                    {
-                        if (Levels.BunnyList[k].CurrentPos == hole)
-                        {
-                            bunnieInTheHoleIndex = Levels.BunnyList[k].Id;
-                            break;
-                        }
-                    }
-                    if (bunnieInTheHoleIndex != 0 && holeList.Contains(hole))
-                    {
-                        Console.Write("|");
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("(");
-                        Console.ResetColor();
-
-                        switch (bunnieInTheHoleIndex)
-                        {
-                            case 1:
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.Write("B");
-                                Console.ResetColor();
-                                break;
-
-                            case 2:
-                                Console.ForegroundColor = ConsoleColor.DarkGray;
-                                Console.Write("B");
-                                Console.ResetColor();
-                                break;
-
-                            case 3:
-                                Console.ForegroundColor = ConsoleColor.Yellow;
-                                Console.Write("B");
-                                Console.ResetColor();
-                                break;
-                        }
-
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write(")");
-                        Console.ResetColor();
-                        //Console.Write("|");
-
-
-                        continue;
-                    }
-                    else if (holeList.Contains(hole))
-                    {
-                        Console.Write("|");
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write(" ()");
-                        Console.ResetColor();
-                        //Console.Write("|");
-                        continue;
-                    }
-
-                    switch (_grid[i, j])
-                    {
-                        case 0:
-                            Console.Write("|   ");
-                            break;
-
-                        case 1:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.Write(" B ");
-                            Console.ResetColor();
-                            break;
-
-                        case 2:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.DarkGray;
-                            Console.Write(" B ");
-                            Console.ResetColor();
-                            break;
-
-                        case 3:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.Write(" B ");
-                            Console.ResetColor();
-                            break;
-
-                        case 4:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(" V ");
-                            Console.ResetColor();
-                            break;
-                        case 5:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            Console.Write(" X ");
-                            Console.ResetColor();
-                            break;
-
-                        case 9:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
-                            Console.Write(" @ ");
-                            Console.ResetColor();
-                            break;
-                    }
-
-                }
-                Console.WriteLine();
-                if (i == gridSize - 1)
-                {
-                    Console.WriteLine(" --- --- --- --- --- ");
-                }
-
-
-
-            }
-            Console.WriteLine($"Number of moves {movesCount}");
-        }
-
-        */
+ 
      
-
+        /*
         public static void AddMushroom(Mushroom theMushroom)
         {
             // if the hole is covered with the mushroom, remove it from the list
@@ -235,7 +91,7 @@ namespace Zekohop
 
             HoleList.Remove(mushroomPos); // if mushroom covers the hole, delete the hole from the list
         }
-
+        /*
 
 
         /***************************

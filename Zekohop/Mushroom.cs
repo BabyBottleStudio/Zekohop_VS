@@ -16,5 +16,18 @@ namespace Zekohop
         }
 
         public (int row, int col) Position { get => _pos; set => _pos = value; }
+
+
+
+        public static void AddMushroom(Mushroom theMushroom)
+        {
+            // if the hole is covered with the mushroom, remove it from the list
+            (int row, int col) mushroomPos = (theMushroom.Position.row, theMushroom.Position.col);
+            GameGrid.Grid[mushroomPos.row, mushroomPos.col] = 9;
+
+            GameGrid.HoleList.Remove(mushroomPos); // if mushroom covers the hole, delete the hole from the list
+        }
+
+
     }
 }

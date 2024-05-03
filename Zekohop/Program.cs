@@ -187,7 +187,7 @@ namespace Zekohop
 
             foreach (object obj in Level.MushroomList)
             {
-                GameGrid.AddMushroom((Mushroom)obj);
+                Mushroom.AddMushroom((Mushroom)obj);
             }
 
             foreach (object obj in Level.BunnyList)
