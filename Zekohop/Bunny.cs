@@ -52,9 +52,9 @@ namespace Zekohop
         public static void WriteBunnyIdToTheGridInitial(Bunny theBunny)
         {
             GameGrid.Grid[theBunny.StartPos.row, theBunny.StartPos.col] = theBunny.Id;
-
             //BunnyList.Add(theBunny);
         }
+
 
         private static bool IsBunnyGoingToJupmOutOfTheGrid(int direction) // da li je ovaj test neophodan ili samo mi treba bolja logika dole u funkcijijijiji. Ili ovaj test sprecava dalje proracune ako se nije ispunio
         {
@@ -98,10 +98,10 @@ namespace Zekohop
             return true;
         }
 
-        private static bool IsBunnyLegitToJump(Bunny theBunny, int direction) // this method checks if the selected bunny is going to jump over the fox, mushroom or another bunny and retunrs bool
+        private static bool IsBunnyLegitToJump(int direction) // this method checks if the selected bunny is going to jump over the fox, mushroom or another bunny and retunrs bool
         {
             // values are inverted because they have more logic that way. 
-            (int y, int x) = theBunny.CurrentPos; // ovo isto napraviti kao public parametar 
+            (int y, int x) = GameGrid.currentBunny.CurrentPos; // ovo isto napraviti kao public parametar 
 
             switch (direction)
             {
@@ -136,9 +136,9 @@ namespace Zekohop
             return false;
         }
 
-        private static (int a, int b)? GetPlaceToHopTo(Bunny theBunny, int direction)
+        private static (int a, int b)? GetPlaceToHopTo(int direction)
         {
-            (int y, int x) = theBunny.CurrentPos; // ovo isto napraviti kao public parametar 
+            (int y, int x) = GameGrid.currentBunny.CurrentPos; // ovo isto napraviti kao public parametar 
 
             switch (direction)
             {
@@ -185,7 +185,7 @@ namespace Zekohop
             return null;
         }
 
-        public static void MoveBunny(Bunny theBunny, int direction)
+        public static void MoveBunny(int direction)
         {
             // direction
             // <= -1  1 =>
@@ -193,12 +193,12 @@ namespace Zekohop
             // -2 ^
             //  2 v
 
-            int x = theBunny.CurrentPos.col;
-            int y = theBunny.CurrentPos.row;
+            int x = GameGrid.currentBunny.CurrentPos.col;
+            int y = GameGrid.currentBunny.CurrentPos.row;
 
             (int a, int b)? hopTo = null;
 
-            if (IsBunnyGoingToJupmOutOfTheGrid(direction) && IsBunnyLegitToJump(theBunny, direction))
+            if (IsBunnyGoingToJupmOutOfTheGrid(direction) && IsBunnyLegitToJump(direction))
             {
 
                 // a da napravimo privremenu listu koju mozemo da testiramo
@@ -206,22 +206,22 @@ namespace Zekohop
                 // yec je recimo na koord 1 1. Cim se selektuje, da se sakupe validna polja za kretanje
                 // 
 
-                hopTo = GetPlaceToHopTo(theBunny, direction);
+                hopTo = GetPlaceToHopTo(direction);
             }
 
-            if (HopToField(theBunny, hopTo)) // treba videti kako da se selekcija zeca iskoristi i ovde da se ne ubacuje kao paramtar
+            if (HopToField(hopTo)) // treba videti kako da se selekcija zeca iskoristi i ovde da se ne ubacuje kao paramtar
             {
                 GameGrid.IncreaseMovesCount();
             }
         }
 
-        static bool HopToField(Bunny theBunny, (int a, int b)? hopTo)
+        static bool HopToField((int a, int b)? hopTo)
         {
             if (hopTo.HasValue)
             {
-                GameGrid.Grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = 0; // Erasing the old Rabbit position from the grid
-                theBunny.CurrentPos = (hopTo.Value.a, hopTo.Value.b); // write in the new position into the rabit instance
-                GameGrid.Grid[theBunny.CurrentPos.row, theBunny.CurrentPos.col] = theBunny.Id; // write in the new position into the grid
+                GameGrid.Grid[GameGrid.currentBunny.CurrentPos.row, GameGrid.currentBunny.CurrentPos.col] = 0; // Erasing the old Rabbit position from the grid
+                GameGrid.currentBunny.CurrentPos = (hopTo.Value.a, hopTo.Value.b); // write in the new position into the rabit instance
+                GameGrid.Grid[GameGrid.currentBunny.CurrentPos.row, GameGrid.currentBunny.CurrentPos.col] = GameGrid.currentBunny.Id; // write in the new position into the grid
 
                 return true;
             }

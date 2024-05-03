@@ -197,7 +197,7 @@ namespace Zekohop
 
             foreach (object obj in Level.FoxList)
             {
-                GameGrid.WriteFoxIdToTheGridInitial((Fox)obj);
+                Fox.WriteFoxIdToTheGridInitial((Fox)obj);
             }
         }
     }
