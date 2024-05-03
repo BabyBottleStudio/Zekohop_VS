@@ -66,7 +66,7 @@ namespace Zekohop
                     {
                         Console.Write($"[{i + 4}] - ");
                     }
-                    WriteInColor("V", Level.FoxList[i].InterfaceColor, false);
+                    WriteInColor($"{Level.FoxList[i].DisplayIcon}", Level.FoxList[i].InterfaceColor, false);
                     Console.WriteLine();
                 }
             }
@@ -98,145 +98,152 @@ namespace Zekohop
             Console.ResetColor();
         }
 
+        static bool IsFieldAHole(int rowIndex, int columnIndex)
+        {
+            // ova metoda treba da vrati informaciju da li je polje rupa ili ne
+            var hole = (rowIndex, columnIndex);
+            return GameGrid.HoleList.Contains(hole);
+        }
 
+        static int GetBunnyInTheHoleIndex(int rowIndex, int columnIndex)
+        {
+            var hole = (rowIndex, columnIndex);
+
+            for (int k = 0; k < Level.BunnyList.Count; k++)
+            {
+                if (Level.BunnyList[k].CurrentPos == hole)
+                {
+                    return Level.BunnyList[k].Id;
+                }
+            }
+            return 0;
+        }
+
+        private static void DrawTheField(int rowIndex, int columnIndex)
+        {
+            string gridFieldToDrawPref = " ";
+            string gridFieldToDrawSufx = "";
+
+            if (columnIndex == 0) // ukoliko je pocetna kolona
+            {
+                gridFieldToDrawPref = "|";
+
+            }
+            else if (columnIndex == GameGrid.GridSize - 1) // ukoliko je krajnja
+            {
+                gridFieldToDrawSufx = "|";
+
+                if (rowIndex % 2 == 0) // ako je red paran
+                {
+                    gridFieldToDrawPref = "|";
+                }
+            }
+            else
+            {
+                if (rowIndex % 2 == 0)
+                {
+                    gridFieldToDrawPref = "|";
+                }
+            }
+
+
+            var isBunnyIn = GetBunnyInTheHoleIndex(rowIndex, columnIndex) != 0;
+            var isAHole = IsFieldAHole(rowIndex, columnIndex);
+
+            Console.Write($"{gridFieldToDrawPref}");
+
+            // pre ovoga mora da se uradi if da li je i zec u rupi ili ne
+            if (isAHole && isBunnyIn)
+            {
+                WriteInColor("(", ConsoleColor.Green, false);
+                DrawBunny(GameGrid.Grid[rowIndex, columnIndex] - 1, "");
+                WriteInColor(")", ConsoleColor.Green, false);
+            }
+            else if (isAHole)
+            {
+                WriteInColor(" ()", ConsoleColor.Green, false);
+                //return;
+            }
+            else
+            {
+                switch (GameGrid.Grid[rowIndex, columnIndex])
+                {
+                    case 0:
+                        Console.Write("   ");
+                        break;
+
+                    case 1:
+                    case 2:
+                    case 3:
+                        DrawBunny(GameGrid.Grid[rowIndex, columnIndex] - 1, " ");
+                        break;
+
+                    case 4:
+                    case 5:
+                        DrawFox(GameGrid.Grid[rowIndex, columnIndex] - 4); // 
+                        break;
+
+                    case 9:
+                        WriteInColor($" {Mushroom.Icon} ", Mushroom.IconColor, false);
+                        break;
+                }
+            }
+            Console.Write($"{gridFieldToDrawSufx}");
+        }
 
         public static void GridAdvanced()
         {
             GameHeader();
-
             for (int i = 0; i < GameGrid.GridSize; i++)
             {
 
                 if (i == 0)
                 {
-                    Console.WriteLine(" --- --- --- --- --- ");
+                    Console.WriteLine("+---+---+---+---+---+");
                 }
-
                 else
                 {
-                    Console.WriteLine("|---| - |---| - |---|");
+                    Console.Write("+---+");
+
+                    WriteInColor(" - ", ConsoleColor.DarkGray, false);
+
+                    Console.Write("+---+");
+
+                    WriteInColor(" - ", ConsoleColor.DarkGray, false);
+
+                    Console.Write("+---+");
+
+                    Console.WriteLine();
                 }
 
                 for (int j = 0; j < GameGrid.GridSize; j++)
                 {
-
-                    var hole = (i, j);
-
-                    int bunnieInTheHoleIndex = 0;
-
-                    for (int k = 0; k < Level.BunnyList.Count; k++)
-                    {
-                        if (Level.BunnyList[k].CurrentPos == hole)
-                        {
-                            bunnieInTheHoleIndex = Level.BunnyList[k].Id;
-                            break;
-                        }
-                    }
-                    if (bunnieInTheHoleIndex != 0 && GameGrid.HoleList.Contains(hole))
-                    {
-                        Console.Write("|");
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("(");
-                        Console.ResetColor();
-
-                        switch (bunnieInTheHoleIndex)
-                        {
-                            case 1:
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.Write("B");
-                                Console.ResetColor();
-                                break;
-
-                            case 2:
-                                Console.ForegroundColor = ConsoleColor.DarkGray;
-                                Console.Write("B");
-                                Console.ResetColor();
-                                break;
-
-                            case 3:
-                                Console.ForegroundColor = ConsoleColor.Yellow;
-                                Console.Write("B");
-                                Console.ResetColor();
-                                break;
-                        }
-
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write(")");
-                        Console.ResetColor();
-                        //Console.Write("|");
-
-
-                        continue;
-                    }
-                    else if (GameGrid.HoleList.Contains(hole))
-                    {
-                        Console.Write("|");
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write(" ()");
-                        Console.ResetColor();
-                        //Console.Write("|");
-                        continue;
-                    }
-
-                    switch (GameGrid.Grid[i, j])
-                    {
-                        case 0:
-                            Console.Write("|   ");
-                            break;
-
-                        case 1:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.Write(" B ");
-                            Console.ResetColor();
-                            break;
-
-                        case 2:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.DarkGray;
-                            Console.Write(" B ");
-                            Console.ResetColor();
-                            break;
-
-                        case 3:
-                            Console.Write("|");
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.Write(" B ");
-                            Console.ResetColor();
-                            break;
-
-                        case 4:
-                            DrawFoxes(0);
-                            break;
-                        case 5:
-                            DrawFoxes(Fox.FoxCount - 1);
-                            break;
-
-                        case 9:
-                            Console.Write("|");
-                            WriteInColor($" {Mushroom.Icon} ", Mushroom.IconColor, false);
-                            break;
-                    }
-
+                    DrawTheField(i, j);
                 }
+
+
                 Console.WriteLine();
                 if (i == GameGrid.GridSize - 1)
                 {
-                    Console.WriteLine(" --- --- --- --- --- ");
+                    Console.WriteLine("+---+---+---+---+---+");
                 }
-
-
-
             }
             NumberOfMoves();
         }
 
 
 
-        private static void DrawFoxes(int colorIndex)
+
+
+
+        private static void DrawBunny(int colorIndex, string prefSufix)
         {
-            Console.Write("|");
-            WriteInColor($"{Level.FoxList[colorIndex].DisplayIcon}", Level.FoxList[colorIndex].InterfaceColor, false);
+            WriteInColor($"{prefSufix}{Level.BunnyList[colorIndex].DisplayIcon}{prefSufix}", Level.BunnyList[colorIndex].InterfaceColor, false);
+        }
+
+        private static void DrawFox(int colorIndex)
+        {
+            WriteInColor($" {Level.FoxList[colorIndex].DisplayIcon} ", Level.FoxList[colorIndex].InterfaceColor, false);
         }
 
         public static void NumberOfMoves()
@@ -245,4 +252,3 @@ namespace Zekohop
         }
     }
 }
-// ubaciti predefinisane boje u zeceve. Postoje definisani u klasama

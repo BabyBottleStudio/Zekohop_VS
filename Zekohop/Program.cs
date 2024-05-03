@@ -15,7 +15,7 @@ namespace Zekohop
             while (true)
             {
                 Console.Clear();
-                GameGrid grid = new GameGrid(); // ovo je pravilo bagove
+                new GameGrid(); // ovo je pravilo bagove
 
                 GameGrid.ResetBunniesFoxesCount();
 
@@ -137,25 +137,58 @@ namespace Zekohop
                     return 1;
 
                 case ConsoleKey.D1:
-                    selectedAnimal = 1;
+                    if (Bunny.BunnyCount > 0)
+                    {
+                        selectedAnimal = 1;
+                    }
                     break;
-
                 case ConsoleKey.D2:
-                    selectedAnimal = 2;
+                    if (Bunny.BunnyCount > 1)
+                    {
+                        selectedAnimal = 2;
+                    }
                     break;
-
                 case ConsoleKey.D3:
-                    selectedAnimal = 3;
+                    if (Bunny.BunnyCount > 2)
+                    {
+                        selectedAnimal = 3;
+                    }
                     break;
-
                 case ConsoleKey.D4:
-                    selectedAnimal = 4;
+                    if (Fox.FoxCount > 0)
+                    {
+                        selectedAnimal = 4;
+                    }
                     break;
 
                 case ConsoleKey.D5:
-                    selectedAnimal = 5;
+                    if (Fox.FoxCount > 1)
+                    {
+                        selectedAnimal = 5;
+                    }
                     break;
 
+                /*
+            case ConsoleKey.D1:
+                selectedAnimal = 1;
+                break;
+
+            case ConsoleKey.D2:
+                selectedAnimal = 2;
+                break;
+
+            case ConsoleKey.D3:
+                selectedAnimal = 3;
+                break;
+
+            case ConsoleKey.D4:
+                selectedAnimal = 4;
+                break;
+
+            case ConsoleKey.D5:
+                selectedAnimal = 5;
+                break;
+                */
                 case ConsoleKey.R:
                     return -66;
 

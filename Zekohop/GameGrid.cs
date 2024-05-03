@@ -47,21 +47,7 @@ namespace Zekohop
             HoleList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
         }
 
-        /*
-        public void ResetLevel()
-        {
-            //ResetBunniesFoxesCount();
-            HoleList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
 
-            for (int i = 0; i < GridSize; i--)
-            {
-                for (int j = 0; j < GridSize; j--)
-                {
-                    Grid[i, j] = 0;
-                }
-            }
-        }
-        */
 
         public static void SetSelectedAnimal()
         {

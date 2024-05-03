@@ -19,7 +19,7 @@ namespace Zekohop
         };
 
         private ConsoleColor interfaceColor;
-
+        public readonly string DisplayIcon = "B";
 
         public Bunny((int x, int y) startPos)
         {
