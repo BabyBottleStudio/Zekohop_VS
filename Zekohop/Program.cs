@@ -35,6 +35,7 @@ namespace Zekohop
 
                     if (userInput == -66) // r
                     {
+                        Console.WriteLine();
                         Console.WriteLine("Restart current level! y/n");
 
                         ConsoleKeyInfo userChoice = Console.ReadKey();
@@ -53,6 +54,7 @@ namespace Zekohop
                         int userChoice;
                         do
                         {
+                            Console.WriteLine();
                             Console.WriteLine($"Enter the level you want to play! (1 - {Level.AllLevelsCount})");
                         }
                         while (!int.TryParse(Console.ReadLine(), out userChoice));
@@ -147,18 +149,30 @@ namespace Zekohop
                     {
                         selectedAnimal = 2;
                     }
+                    //else
+                    //{
+                    //    selectedAnimal = 0;
+                    //}
                     break;
                 case ConsoleKey.D3:
                     if (Bunny.BunnyCount > 2)
                     {
                         selectedAnimal = 3;
                     }
+                    //else
+                    //{
+                    //    selectedAnimal = 0;
+                    //}
                     break;
                 case ConsoleKey.D4:
                     if (Fox.FoxCount > 0)
                     {
                         selectedAnimal = 4;
                     }
+                    //else
+                    //{
+                    //    selectedAnimal = 0;
+                    //}
                     break;
 
                 case ConsoleKey.D5:
@@ -166,29 +180,13 @@ namespace Zekohop
                     {
                         selectedAnimal = 5;
                     }
+                    //else
+                    //{
+                    //    selectedAnimal = 0;
+                    //}
                     break;
 
-                /*
-            case ConsoleKey.D1:
-                selectedAnimal = 1;
-                break;
 
-            case ConsoleKey.D2:
-                selectedAnimal = 2;
-                break;
-
-            case ConsoleKey.D3:
-                selectedAnimal = 3;
-                break;
-
-            case ConsoleKey.D4:
-                selectedAnimal = 4;
-                break;
-
-            case ConsoleKey.D5:
-                selectedAnimal = 5;
-                break;
-                */
                 case ConsoleKey.R:
                     return -66;
 

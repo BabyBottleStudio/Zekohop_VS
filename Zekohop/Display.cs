@@ -13,7 +13,34 @@ namespace Zekohop
 
         public static void GameHeader()
         {
-            Console.WriteLine($"Level {Level.LevelIndex}.   >>{Level.NumberOfMOves}.");
+            if (Level.LevelIndex < 13)
+            {
+                WriteInColor("+--- - Starter - ---+", ConsoleColor.DarkGreen);
+                //Console.WriteLine("Starter");
+            }
+            else if (Level.LevelIndex < 25)
+            {
+                WriteInColor("+--- - Junior  - ---+", ConsoleColor.DarkYellow);
+                //Console.WriteLine("Junior");
+            }
+            else if (Level.LevelIndex < 37)
+            {
+
+                WriteInColor("+--- - Expert  - ---+", ConsoleColor.DarkRed);
+                //Console.WriteLine("Expert");
+            }
+            else if (Level.LevelIndex < 49)
+            {
+                WriteInColor("+--- - Master  - ---+", ConsoleColor.DarkMagenta);
+                //Console.WriteLine("Master");
+            }
+            else
+            {
+                WriteInColor("+--- - Wizard  - ---+", ConsoleColor.DarkBlue);
+                //Console.WriteLine("Wizard");
+            }
+            Console.WriteLine($"  Level {Level.LevelIndex}.    >>{Level.NumberOfMOves}.");
+            Console.WriteLine();
         }
 
         public static void LevelWin()
@@ -29,14 +56,13 @@ namespace Zekohop
             Console.ReadKey();
         }
 
-
-
-        public static void GameMenu()
+        public static void GameMenu() // treba ubaciti poruku kad korisnik pritisne pogresan broj
         {
             Console.WriteLine();
-            Console.WriteLine("Press the number keys to select.");
-
+            Console.WriteLine("Use the number keys to select.");
             Console.WriteLine("Bunnies:");
+
+
             for (int i = 0; i < Bunny.BunnyCount; i++)
             {
                 if (i == GameGrid.selectedAnimal - 1)
@@ -50,8 +76,6 @@ namespace Zekohop
                 WriteInColor("B", Level.BunnyList[i].InterfaceColor, false);
                 Console.WriteLine();
             }
-
-
 
             if (Fox.FoxCount > 0)
             {
@@ -69,6 +93,7 @@ namespace Zekohop
                     WriteInColor($"{Level.FoxList[i].DisplayIcon}", Level.FoxList[i].InterfaceColor, false);
                     Console.WriteLine();
                 }
+
             }
             Console.WriteLine("Use arrow keys to move!");
             Console.WriteLine();
@@ -152,24 +177,22 @@ namespace Zekohop
 
             Console.Write($"{gridFieldToDrawPref}");
 
-            // pre ovoga mora da se uradi if da li je i zec u rupi ili ne
-            if (isAHole && isBunnyIn)
+            if (isAHole && isBunnyIn) // if the field is a hole with the rabbit in it
             {
                 WriteInColor("(", ConsoleColor.Green, false);
                 DrawBunny(GameGrid.Grid[rowIndex, columnIndex] - 1, "");
                 WriteInColor(")", ConsoleColor.Green, false);
             }
-            else if (isAHole)
+            else if (isAHole) // empty hole
             {
                 WriteInColor(" ()", ConsoleColor.Green, false);
-                //return;
             }
             else
             {
                 switch (GameGrid.Grid[rowIndex, columnIndex])
                 {
                     case 0:
-                        Console.Write("   ");
+                        Console.Write("   "); // empty field
                         break;
 
                     case 1:
@@ -231,11 +254,6 @@ namespace Zekohop
             NumberOfMoves();
         }
 
-
-
-
-
-
         private static void DrawBunny(int colorIndex, string prefSufix)
         {
             WriteInColor($"{prefSufix}{Level.BunnyList[colorIndex].DisplayIcon}{prefSufix}", Level.BunnyList[colorIndex].InterfaceColor, false);
@@ -243,6 +261,11 @@ namespace Zekohop
 
         private static void DrawFox(int colorIndex)
         {
+            //Console.BackgroundColor = Level.FoxList[colorIndex].InterfaceColor;
+            //Console.ForegroundColor = ConsoleColor.White;
+            //Console.Write($" {Level.FoxList[colorIndex].DisplayIcon} ");
+
+            //Console.ResetColor();
             WriteInColor($" {Level.FoxList[colorIndex].DisplayIcon} ", Level.FoxList[colorIndex].InterfaceColor, false);
         }
 
