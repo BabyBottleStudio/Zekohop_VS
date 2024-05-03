@@ -192,7 +192,7 @@ namespace Zekohop
 
             foreach (object obj in Level.BunnyList)
             {
-                GameGrid.WriteBunnyIdToTheGridInitial((Bunny)obj);
+                Bunny.WriteBunnyIdToTheGridInitial((Bunny)obj);
             }
 
             foreach (object obj in Level.FoxList)

@@ -20,7 +20,7 @@ namespace Zekohop
         {
             Console.WriteLine();
             Console.WriteLine($"> >  L E V E L  - {Level.LevelIndex} -  C L E A R  < < ");
-            Console.WriteLine($"       You used {GameGrid.movesCount} moves.");
+            Console.WriteLine($"       You used {GameGrid.MovesCount} moves.");
             // ubaci info o tome koliko je idealno za svaki nivo
             Console.WriteLine();
             Console.WriteLine($"Press any key to go to the level {Level.LevelIndex + 1}.");
@@ -235,7 +235,7 @@ namespace Zekohop
 
         public static void NumberOfMoves()
         {
-            Console.WriteLine($"Number of moves {GameGrid.movesCount}");
+            Console.WriteLine($"Number of moves {GameGrid.MovesCount}");
         }
     }
 }

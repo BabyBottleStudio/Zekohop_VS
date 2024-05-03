@@ -11,7 +11,7 @@ namespace Zekohop
         private const int gridSize = 5; // defines the size of the grid
         static int[,] _grid; // game grid 5x5
 
-        public static int movesCount = 0; // how many moves has player used to solve the puzzle
+        private static int movesCount = 0; // how many moves has player used to solve the puzzle
 
         static List<(int row, int col)> holeList; // hole list treba da bude fleksibilna lista
 
@@ -24,6 +24,7 @@ namespace Zekohop
 
         public static List<(int row, int col)> HoleList { get => holeList; set => holeList = value; }
         public static int[,] Grid { get => _grid; set => _grid = value; }
+        public static int MovesCount { get => movesCount; set => movesCount = value; }
 
         /*
         00 01 02 03 04
@@ -32,6 +33,12 @@ namespace Zekohop
         30 31 32 33 34
         40 41 42 43 44
         */
+
+
+        public static void IncreaseMovesCount()
+        {
+            MovesCount++;
+        }
 
         public GameGrid()
         {
@@ -75,7 +82,7 @@ namespace Zekohop
             }
             else if (GameGrid.selectedAnimal > 0 && GameGrid.selectedAnimal < 4)
             {
-                MoveBunny(Level.BunnyList[GameGrid.selectedAnimal - 1], userInput);
+                Bunny.MoveBunny(Level.BunnyList[GameGrid.selectedAnimal - 1], userInput);
                 //mrdas zeceve
             }
         }
@@ -98,6 +105,7 @@ namespace Zekohop
          ***   B U N N Y ! ! !   ***
          ***************************/
 
+        /*
         public static  void WriteBunnyIdToTheGridInitial(Bunny theBunny)
         {
             Grid[theBunny.StartPos.row, theBunny.StartPos.col] = theBunny.Id;
@@ -278,7 +286,7 @@ namespace Zekohop
         }
 
 
-
+*/
 
 
         /***********************
@@ -320,7 +328,7 @@ namespace Zekohop
 
                                 Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
                                 Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                movesCount++;
+                                MovesCount++;
 
                             }
                         }
@@ -342,7 +350,7 @@ namespace Zekohop
 
                                 Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
                                 Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                movesCount++;
+                                MovesCount++;
                             }
                         }
                     }
@@ -368,7 +376,7 @@ namespace Zekohop
 
                                 Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
                                 Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                movesCount++;
+                                MovesCount++;
                             }
                         }
                     }
@@ -391,7 +399,7 @@ namespace Zekohop
 
                                 Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
                                 Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                movesCount++;
+                                MovesCount++;
                             }
                         }
                     }
@@ -415,7 +423,7 @@ namespace Zekohop
 
                                 Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
                                 Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                movesCount++;
+                                MovesCount++;
 
                             }
                         }
@@ -435,7 +443,7 @@ namespace Zekohop
 
                                 Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
                                 Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                movesCount++;
+                                MovesCount++;
                             }
                         }
                     }
@@ -462,7 +470,7 @@ namespace Zekohop
                                 Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
                                 Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
 
-                                movesCount++;
+                                MovesCount++;
                             }
                         }
                     }
@@ -484,7 +492,7 @@ namespace Zekohop
 
                                 Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
                                 Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                movesCount++;
+                                MovesCount++;
                             }
                         }
                     }
@@ -517,7 +525,7 @@ namespace Zekohop
         {
             Fox.ResetFoxCount();
             Bunny.ResetBunniesCount();
-            movesCount = 0;
+            MovesCount = 0;
         }
     }
 }
