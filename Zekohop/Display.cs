@@ -13,17 +13,17 @@ namespace Zekohop
 
         public static void GameHeader()
         {
-            Console.WriteLine($"Level {Levels.LevelIndex}.   >>{Levels.NumberOfMOves}.");
+            Console.WriteLine($"Level {Level.LevelIndex}.   >>{Level.NumberOfMOves}.");
         }
 
         public static void Win()
         {
             Console.WriteLine();
-            Console.WriteLine($"> >  L E V E L  - {Levels.LevelIndex} -  C L E A R  < < ");
+            Console.WriteLine($"> >  L E V E L  - {Level.LevelIndex} -  C L E A R  < < ");
             Console.WriteLine($"       You used {GameGrid.movesCount} moves.");
             // ubaci info o tome koliko je idealno za svaki nivo
             Console.WriteLine();
-            Console.WriteLine($"Press any key to go to the level {Levels.LevelIndex + 1}.");
+            Console.WriteLine($"Press any key to go to the level {Level.LevelIndex + 1}.");
             Console.ReadKey();
         }
 
@@ -43,7 +43,7 @@ namespace Zekohop
                 {
                     Console.Write($"[{ i + 1}] - ");
                 }
-                WriteInColor("B", Levels.BunnyList[i].InterfaceColor, false);
+                WriteInColor("B", Level.BunnyList[i].InterfaceColor, false);
                 Console.WriteLine();
             }
 
@@ -62,7 +62,7 @@ namespace Zekohop
                     {
                         Console.Write($"[{i + 4}] - ");
                     }
-                    WriteInColor("V", Levels.FoxList[i].InterfaceColor, false);
+                    WriteInColor("V", Level.FoxList[i].InterfaceColor, false);
                     Console.WriteLine();
                 }
             }
@@ -111,22 +111,18 @@ namespace Zekohop
                     Console.WriteLine("|---| - |---| - |---|");
                 }
 
-
-
                 for (int j = 0; j < GameGrid.GridSize; j++)
                 {
-                    // test da li je rupa u pitanju
-                    // kako resiti kad je zec u rupi?
+
                     var hole = (i, j);
 
-                    //Enumerable(0, bunnyList.Count).Select
                     int bunnieInTheHoleIndex = 0;
 
-                    for (int k = 0; k < Levels.BunnyList.Count; k++)
+                    for (int k = 0; k < Level.BunnyList.Count; k++)
                     {
-                        if (Levels.BunnyList[k].CurrentPos == hole)
+                        if (Level.BunnyList[k].CurrentPos == hole)
                         {
-                            bunnieInTheHoleIndex = Levels.BunnyList[k].Id;
+                            bunnieInTheHoleIndex = Level.BunnyList[k].Id;
                             break;
                         }
                     }
@@ -243,3 +239,4 @@ namespace Zekohop
         }
     }
 }
+// ubaciti predefinisane boje u zeceve. Postoje definisani u klasama

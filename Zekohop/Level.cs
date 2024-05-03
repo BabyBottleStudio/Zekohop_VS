@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Zekohop
 {
-    public static class Levels
+    public static class Level
     {
         // this class handles the data levels contain
         // it has 3 lists, for each type of objects in the game. Set level data handles the lists and creates instances with the proper coordinates. Impossible stuff like havint two objects on the same coordinate is not handled. Maybe if a level creator is added later :)
@@ -26,6 +26,13 @@ namespace Zekohop
         
         internal static int LevelIndex { get => levelIndex; set => levelIndex = value; } // handles the current level
         internal static int NumberOfMOves { get => numberOfMOves; set => numberOfMOves = value; } // represents the number of minimal moves neededt to solve the level
+
+
+
+
+
+
+
 
         internal static void SetLevelData()
         {

@@ -58,11 +58,11 @@ namespace Zekohop
         {
             if (selectedAnimal > 3)
             {
-                currentFox =  Levels.FoxList[GameGrid.selectedAnimal - 1 - 3];
+                currentFox =  Level.FoxList[GameGrid.selectedAnimal - 1 - 3];
             }
             else if (GameGrid.selectedAnimal > 0 && GameGrid.selectedAnimal < 4)
             {
-                currentBunny =  Levels.BunnyList[GameGrid.selectedAnimal - 1];
+                currentBunny =  Level.BunnyList[GameGrid.selectedAnimal - 1];
             }
         }        
 
@@ -71,11 +71,11 @@ namespace Zekohop
             if (selectedAnimal > 3)
             {
                 // mrdas lisice
-                MoveFox(Levels.FoxList[GameGrid.selectedAnimal - 1 - 3], userInput);
+                MoveFox(Level.FoxList[GameGrid.selectedAnimal - 1 - 3], userInput);
             }
             else if (GameGrid.selectedAnimal > 0 && GameGrid.selectedAnimal < 4)
             {
-                MoveBunny(Levels.BunnyList[GameGrid.selectedAnimal - 1], userInput);
+                MoveBunny(Level.BunnyList[GameGrid.selectedAnimal - 1], userInput);
                 //mrdas zeceve
             }
         }
@@ -641,9 +641,9 @@ namespace Zekohop
         {
             var count = 0;
 
-            for (int i = 0; i < Levels.BunnyList.Count; i++)
+            for (int i = 0; i < Level.BunnyList.Count; i++)
             {
-                if (HoleList.Contains(Levels.BunnyList[i].CurrentPos))
+                if (HoleList.Contains(Level.BunnyList[i].CurrentPos))
                 {
                     count++;
                 }

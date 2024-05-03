@@ -10,7 +10,7 @@ namespace Zekohop
     {
         static void Main(string[] args)
         {
-            Levels.LevelIndex = 1;
+            Level.LevelIndex = 1;
 
             while (true)
             {
@@ -66,24 +66,24 @@ namespace Zekohop
                             userChoice = 60;
                         }
 
-                        Levels.LevelIndex = userChoice;
+                        Level.LevelIndex = userChoice;
                         break;
                     }
                     else if (userInput == -22) // a
                     {
-                        Levels.LevelIndex--;
-                        if (Levels.LevelIndex < 1)
+                        Level.LevelIndex--;
+                        if (Level.LevelIndex < 1)
                         {
-                            Levels.LevelIndex = 60;
+                            Level.LevelIndex = 60;
                         }
                         break;
                     }
                     else if (userInput == -24) // d
                     {
-                        Levels.LevelIndex++;
-                        if (Levels.LevelIndex > 60)
+                        Level.LevelIndex++;
+                        if (Level.LevelIndex > 60)
                         {
-                            Levels.LevelIndex = 1;
+                            Level.LevelIndex = 1;
                         }
                         break;
                     }
@@ -99,7 +99,7 @@ namespace Zekohop
                     if (GameGrid.IsThereAWin())
                     {
                         Display.Win();
-                        Levels.LevelIndex++;
+                        Level.LevelIndex++;
                         break;
                     }
                 }
@@ -183,19 +183,19 @@ namespace Zekohop
 
         static void LoadLevel()
         {
-            Levels.SetLevelData();
+            Level.SetLevelData();
 
-            foreach (object obj in Levels.MushroomList)
+            foreach (object obj in Level.MushroomList)
             {
                 GameGrid.AddMushroom((Mushroom)obj);
             }
 
-            foreach (object obj in Levels.BunnyList)
+            foreach (object obj in Level.BunnyList)
             {
                 GameGrid.WriteBunnyIdToTheGridInitial((Bunny)obj);
             }
 
-            foreach (object obj in Levels.FoxList)
+            foreach (object obj in Level.FoxList)
             {
                 GameGrid.WriteFoxIdToTheGridInitial((Fox)obj);
             }
