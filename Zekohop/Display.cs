@@ -206,7 +206,7 @@ namespace Zekohop
             }
             else if (isAHole) // empty hole
             {
-                WriteInColor(" ()", ConsoleColor.DarkBlue, false);
+                WriteInColor(" ()", ConsoleColor.DarkGreen, false);
             }
             else
             {
@@ -346,9 +346,10 @@ namespace Zekohop
 
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("Press [S] - to jump to the desired challenge.");
-            Console.WriteLine("Press [D] - to select the next challenge.");
-            Console.WriteLine("Press [A] - to select the previous challenge.");
+            Console.WriteLine("Press [S] to jump to the desired challenge.");
+            Console.WriteLine("Press [D] to select the next challenge.");
+            Console.WriteLine("Press [A] to select the previous challenge.");
+            Console.WriteLine("Press [R] to reset the challenge.");
             Console.WriteLine();
 
             Console.WriteLine("Press any key to return to the game!");
