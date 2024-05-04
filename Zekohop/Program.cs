@@ -33,7 +33,16 @@ namespace Zekohop
 
                     GameGrid.userInput = userInput;
 
-                    if (userInput == -66) // r
+                    if (userInput == -99)
+                    {
+                        // help menu
+                        Console.Clear();
+                        Display.HelpMenu();
+                        
+                        Console.ReadKey();
+                        Display.GridAdvanced();
+                    }
+                    else if (userInput == -66) // r
                     {
                         Console.WriteLine();
                         Console.WriteLine("Restart current level! y/n");
@@ -198,7 +207,8 @@ namespace Zekohop
 
                 case ConsoleKey.D:
                     return -24;
-
+                case ConsoleKey.H:
+                    return -99;
                 default:
                     Console.WriteLine();
                     Console.WriteLine("Invalid input!");
@@ -230,14 +240,11 @@ sistem mora da prati koliko je zeceva na sceni i koliko je  u rupama. Win condit
 /// 
 /// indikaciju šta je selektovano
 /// prepravi boje za zeceve
-/// ubaci boje za ispise nivoa
-/// reset nesto hoce pa nece da radi - srpska tastatura
-/// 
+/// treba ubaciti nekakav tutoriajal i objasniti da asd koristis da menjas nivoe i da R resetuje 
 /// 
 ///  refaktoring
 ///  
 /// bugs log
-/// puca prilikom resetovanja
 
 */
 

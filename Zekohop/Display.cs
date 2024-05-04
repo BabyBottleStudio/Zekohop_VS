@@ -10,7 +10,9 @@ namespace Zekohop
     {
 
 
-
+        /// <summary>
+        /// Draws the header of the game. It contains the info about the current level. Difficulty, current level index and least amount of moves to solve the puzzle.
+        /// </summary>
         public static void GameHeader()
         {
             if (Level.LevelIndex < 13)
@@ -43,6 +45,9 @@ namespace Zekohop
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Menu that is displayed when the player wins the level.
+        /// </summary>
         public static void LevelWin()
         {
             Console.WriteLine();
@@ -56,11 +61,16 @@ namespace Zekohop
             Console.ReadKey();
         }
 
+
+        /// <summary>
+        /// Responsive menu below the game screen. It informs the player about the current selection.
+        /// </summary>
         public static void GameMenu() // treba ubaciti poruku kad korisnik pritisne pogresan broj
         {
             Console.WriteLine();
+            Console.WriteLine("Press 'H' for Help.");
             Console.WriteLine("Use the number keys to select.");
-            Console.WriteLine("Bunnies:");
+            Console.WriteLine(" - Bunnies - ");
 
 
             for (int i = 0; i < Bunny.BunnyCount; i++)
@@ -79,7 +89,7 @@ namespace Zekohop
 
             if (Fox.FoxCount > 0)
             {
-                Console.WriteLine("Foxes:");
+                Console.WriteLine(" - - Foxes - - ");
                 for (int i = 0; i < Fox.FoxCount; i++)
                 {
                     if (i + 4 == GameGrid.selectedAnimal)
@@ -97,9 +107,6 @@ namespace Zekohop
             }
             Console.WriteLine("Use arrow keys to move!");
             Console.WriteLine();
-
-
-
         }
 
         /// <summary>
@@ -108,7 +115,7 @@ namespace Zekohop
         /// <param name="text"></param>
         /// <param name="color"></param>
         /// <param name="writeLine"></param>
-        static void WriteInColor(string text, ConsoleColor color, bool writeLine = true)
+        private static void WriteInColor(string text, ConsoleColor color, bool writeLine = true)
         {
             Console.ForegroundColor = color;
             if (writeLine)
@@ -123,14 +130,26 @@ namespace Zekohop
             Console.ResetColor();
         }
 
-        static bool IsFieldAHole(int rowIndex, int columnIndex)
+        /// <summary>
+        /// This method returns the bool if the current field is a Hole or not. Parameters are the coordinates of the current field.
+        /// </summary>
+        /// <param name="rowIndex"></param>
+        /// <param name="columnIndex"></param>
+        /// <returns></returns>        
+        private static bool IsFieldAHole(int rowIndex, int columnIndex)
         {
             // ova metoda treba da vrati informaciju da li je polje rupa ili ne
             var hole = (rowIndex, columnIndex);
             return GameGrid.HoleList.Contains(hole);
         }
 
-        static int GetBunnyInTheHoleIndex(int rowIndex, int columnIndex)
+        /// <summary>
+        /// Returns the index of a Bunny that is in the current hole. Info important for correct drawing on the screen.
+        /// </summary>
+        /// <param name="rowIndex"></param>
+        /// <param name="columnIndex"></param>
+        /// <returns></returns>
+        private static int GetBunnyInTheHoleIndex(int rowIndex, int columnIndex)
         {
             var hole = (rowIndex, columnIndex);
 
@@ -144,8 +163,10 @@ namespace Zekohop
             return 0;
         }
 
-        private static void DrawTheField(int rowIndex, int columnIndex)
+        private static void DrawTheSingleField(int rowIndex, int columnIndex)
         {
+
+
             string gridFieldToDrawPref = " ";
             string gridFieldToDrawSufx = "";
 
@@ -185,7 +206,7 @@ namespace Zekohop
             }
             else if (isAHole) // empty hole
             {
-                WriteInColor(" ()", ConsoleColor.Green, false);
+                WriteInColor(" ()", ConsoleColor.DarkBlue, false);
             }
             else
             {
@@ -217,6 +238,7 @@ namespace Zekohop
         public static void GridAdvanced()
         {
             GameHeader();
+
             for (int i = 0; i < GameGrid.GridSize; i++)
             {
 
@@ -241,7 +263,7 @@ namespace Zekohop
 
                 for (int j = 0; j < GameGrid.GridSize; j++)
                 {
-                    DrawTheField(i, j);
+                    DrawTheSingleField(i, j);
                 }
 
 
@@ -256,7 +278,9 @@ namespace Zekohop
 
         private static void DrawBunny(int colorIndex, string prefSufix)
         {
-            WriteInColor($"{prefSufix}{Level.BunnyList[colorIndex].DisplayIcon}{prefSufix}", Level.BunnyList[colorIndex].InterfaceColor, false);
+
+            WriteInColor($"{prefSufix}{Bunny.DisplayIcon}{prefSufix}", Level.BunnyList[colorIndex].InterfaceColor, false);
+            // WriteInColor($"{prefSufix}{Level.BunnyList[colorIndex].DisplayIcon}{prefSufix}", Level.BunnyList[colorIndex].InterfaceColor, false);
         }
 
         private static void DrawFox(int colorIndex)
@@ -272,6 +296,62 @@ namespace Zekohop
         public static void NumberOfMoves()
         {
             Console.WriteLine($"Number of moves {GameGrid.MovesCount}");
+        }
+
+        public static void HelpMenu()
+        {
+            List<ConsoleColor> bunnyColors = new List<ConsoleColor> { };
+
+            foreach (ConsoleColor obj in Bunny.bunnyInterfaceColors)
+            {
+                bunnyColors.Add(obj);
+            }
+
+            Console.WriteLine("GAME RULES JUMP IN’");
+            Console.WriteLine();
+            Console.WriteLine($"The object of the game is to move the rabbits [{Bunny.DisplayIcon}] and foxes [{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]}] around the game board until all of the rabbits are safe in the holes [( )].");
+            Console.WriteLine("Movement rules");
+            Console.WriteLine("Foxes move by sliding forward or backward.Foxes cannot jump over obstacles.");
+            Console.WriteLine($"Mushrooms [{Mushroom.Icon}] are stationary and cannot be moved.");
+            Console.WriteLine("Rabbits move by jumping horizontally or vertically over one or more spaces with obstacles: other rabbits, foxes, mushrooms or a combination of these.");
+            Console.WriteLine("Rabbits must land on the first empty space after a jump - they can never move over empty spaces.");
+            Console.WriteLine("Rabbits can never move without jumping over at least 1 obstacle, thus they can never move to an adjacent space.");
+            Console.WriteLine("A hole with a rabbit inside is an obstacle, while empty holes are not obstacles.");
+            Console.WriteLine("A rabbit can jump into – but not over – an empty hole.");
+            Console.WriteLine("If needed, rabbits can jump out of holes they are already sitting in.");
+            Console.WriteLine("Rabbits can jump over a fox no matter the orientation of the fox: tail to front, front to tail, or over the side.");
+            Console.WriteLine("You have found a solution when all of the rabbits are inside the holes! The end position of the foxes is not important.");
+ 
+            Console.WriteLine();
+            Console.WriteLine($"Bunnies: (select one and use arrows to jump over the obstacles)"); 
+            Console.WriteLine();
+
+            Console.Write($"Press [1] to select the {bunnyColors[0]} Bynny ");
+            WriteInColor($"- {Bunny.DisplayIcon} -", bunnyColors[0]);
+
+            Console.Write($"Press [2] to select the {bunnyColors[1]} Bynny ");
+            WriteInColor($"- {Bunny.DisplayIcon} -", bunnyColors[1]);
+
+            Console.Write($"Press [3] to select the {bunnyColors[2]} Bynny ");
+            WriteInColor($"- {Bunny.DisplayIcon} -", bunnyColors[2]);
+            Console.WriteLine();
+            Console.WriteLine("Foxes: (select one and use arrow keys to slide them left and right or up and down)");
+            Console.WriteLine($"Press [4] to select the {Fox.InterfaceColors[0]} Fox.");
+            WriteInColor($"{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[0]);
+            WriteInColor($"{Fox.DisplayIconsList[1]}{Fox.DisplayIconsList[1]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[0]);
+            Console.WriteLine();
+            Console.WriteLine($"Press [5] to select the {Fox.InterfaceColors[1]} Fox.");
+            WriteInColor($"{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[1]);
+            WriteInColor($"{Fox.DisplayIconsList[1]}{Fox.DisplayIconsList[1]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[1]);
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Press [S] - to jump to the desired challenge.");
+            Console.WriteLine("Press [D] - to select the next challenge.");
+            Console.WriteLine("Press [A] - to select the previous challenge.");
+            Console.WriteLine();
+
+            Console.WriteLine("Press any key to return to the game!");
         }
     }
 }

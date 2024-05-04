@@ -11,7 +11,7 @@ namespace Zekohop
         (int x, int y) _currentPos;
 
         private static int bunnyCount;
-        private static List<ConsoleColor> bunnyInterfaceColors = new List<ConsoleColor>
+        public readonly static List<ConsoleColor> bunnyInterfaceColors = new List<ConsoleColor> // ako menjas ovo ovde, u helpu su ove boje hardkodovane
         {
             ConsoleColor.White,
             ConsoleColor.DarkGray,
@@ -19,7 +19,7 @@ namespace Zekohop
         };
 
         private ConsoleColor interfaceColor;
-        public readonly string DisplayIcon = "B";
+        public static readonly string DisplayIcon = "B";
 
         public Bunny((int x, int y) startPos)
         {

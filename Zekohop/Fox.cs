@@ -16,7 +16,9 @@ namespace Zekohop
         string _orientation;
         string displayIcon; // ne sme da bude static jer treba da se veze za instanirani objekat
 
-        private static List<ConsoleColor> foxInterfaceColors = new List<ConsoleColor>
+        public readonly static List<string> DisplayIconsList = new List<string> {"<", ">", "^", "V" };
+
+        public readonly static List<ConsoleColor> InterfaceColors = new List<ConsoleColor>
         {
             ConsoleColor.Red,
             ConsoleColor.DarkYellow
@@ -33,26 +35,26 @@ namespace Zekohop
             {
                 case "Horizontal Left":                             // glava gleda u negativan x
                     TailPos = (HeadPos.row, HeadPos.col + 1);
-                    DisplayIcon = "<";
+                    DisplayIcon = DisplayIconsList[0];
                     break;
                 case "Horizontal Right":                            // glava gleda u pozitivan x           
                     TailPos = (HeadPos.row, HeadPos.col - 1);
-                    DisplayIcon = ">";
+                    DisplayIcon = DisplayIconsList[1];
                     break;
                 case "Vertical Up":                                 // glava gleda na gore            
                     TailPos = (HeadPos.row + 1, HeadPos.col);
-                    DisplayIcon = "^";
+                    DisplayIcon = DisplayIconsList[2];
                     break;
                 case "Vertical Down":                               // glava gleda na dole           
                     TailPos = (HeadPos.row - 1, HeadPos.col);
-                    DisplayIcon = "V";
+                    DisplayIcon = DisplayIconsList[3];
                     break;
             }
 
 
             FoxCount++;
             FoxId = FoxCount + 3;
-            InterfaceColor = foxInterfaceColors[FoxCount - 1];
+            InterfaceColor = InterfaceColors[FoxCount - 1];
         }
 
         public static int FoxCount
@@ -129,11 +131,8 @@ namespace Zekohop
                     {
                         if (theFox.TailPos.col - 1 >= 0) // ako nije out of bounds
                         {
-                            Console.WriteLine($"Direction = {direction}. Nisam out of bounds! mrda rep glava prati");
                             if (GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col - 1] == 0) // ako polje sa desne strane je prazno
                             {
-                                Console.WriteLine($"Ispunjeni uslovi za pomeranje!");
-                                //var temp = new Tuple<int, int>(0, -1);
                                 GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
                                 GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
 
@@ -146,7 +145,6 @@ namespace Zekohop
                             }
                         }
                     }
-
                     break;
 
                 case 1:
@@ -161,7 +159,6 @@ namespace Zekohop
                                 //var temp = new Tuple<int, int>(0, -1);
                                 GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
                                 GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-
 
                                 theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col + 1);
                                 theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col + 1);
@@ -216,7 +213,6 @@ namespace Zekohop
                                 GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
                                 GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
                                 GameGrid.IncreaseMovesCount();
-
                             }
                         }
                     }
@@ -249,12 +245,10 @@ namespace Zekohop
                         // ide dupetom na dole
                         if (theFox.TailPos.row + 1 < GameGrid.GridSize) // ako nije out of bounds
                         {
-                            Console.WriteLine($"Direction = {direction}. Nisam out of bounds! mrda rep glava prati");
                             if (GameGrid.Grid[theFox.TailPos.row + 1, theFox.TailPos.col] == 0) // ako polje sa desne strane je prazno
                             {
                                 GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
                                 GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-
 
                                 theFox.HeadPos = (theFox.HeadPos.row + 1, theFox.HeadPos.col);
                                 theFox.TailPos = (theFox.TailPos.row + 1, theFox.TailPos.col);
@@ -273,7 +267,6 @@ namespace Zekohop
                         // mrda glavu u desno, rep prati
                         if (theFox.HeadPos.row + 1 < GameGrid.GridSize) // ako nije out of bounds
                         {
-
                             if (GameGrid.Grid[theFox.HeadPos.row + 1, theFox.HeadPos.col] == 0) // ukoliko je polje sa desne strane prazno
                             {
                                 GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
