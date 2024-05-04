@@ -9,12 +9,12 @@ namespace Zekohop
     class Fox
     {
 
-        private static int foxCount;
-        int foxId;
-        (int row, int col) _headPos;
-        (int row, int col) _tailPos;
-        string _orientation;
-        string displayIcon; // ne sme da bude static jer treba da se veze za instanirani objekat
+        private static int foxCount; // static variable carved into the class rather than into the instance
+        int foxId; // each instance of the fox has unique ID
+        (int row, int col) _headPos; // position of a head
+        (int row, int col) _tailPos; // position of a tail
+        string _orientation; // defines how the fox is oriented. It makes a difference if it is horisontal L to R or R to L. I wanted to make it more fun and diverse, like in the original board game Jump In' by Smart Games.
+        string displayIcon; // this is a display icon carved into the instance of the fox. Display script uses this to, well..., display the fox properly. This  can't be static.
 
         public readonly static List<string> DisplayIconsList = new List<string> {"<", ">", "^", "V" };
 
@@ -24,9 +24,13 @@ namespace Zekohop
             ConsoleColor.DarkYellow
         };
 
-        private ConsoleColor interfaceColor;
+        private ConsoleColor interfaceColor; // this info is part of the instance. It is used by the display script to access the color info.
 
-
+        /// <summary>
+        /// Constructor activated when Fox instance is created. Head Position is a tupple value reprsenting the row and column of the grid. Orentatnion is a string and it must be provided exactly => "Horizontal Left", "Horizontal Right", "Vertical Up", "Vertical Down". I used it that way so I can figure out what's going on while programing.
+        /// </summary>
+        /// <param name="headPos"></param>
+        /// <param name="orientation"></param>
         public Fox((int row, int col) headPos, string orientation)
         {
             HeadPos = headPos;
