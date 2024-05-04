@@ -38,19 +38,19 @@ namespace Zekohop
         {
             SetLevelData();
 
-            foreach (object obj in Level.MushroomList)
+            foreach (object obj in MushroomList)
             {
                 Mushroom.AddMushroom((Mushroom)obj);
             }
 
-            foreach (object obj in Level.BunnyList)
+            foreach (object obj in BunnyList)
             {
                 Bunny.WriteBunnyIdToTheGridInitial((Bunny)obj);
             }
 
-            foreach (object obj in Level.FoxList)
+            foreach (object obj in FoxList)
             {
-                Fox.WriteFoxIdToTheGridInitial((Fox)obj);
+                Fox.WriteFoxIdToTheGrid((Fox)obj);
             }
         }
 

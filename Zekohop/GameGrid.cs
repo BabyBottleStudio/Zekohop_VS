@@ -53,11 +53,11 @@ namespace Zekohop
         {
             if (selectedAnimal > 3)
             {
-                currentFox = Level.FoxList[GameGrid.selectedAnimal - 1 - 3];
+                currentFox = Level.FoxList[selectedAnimal - 1 - 3];
             }
-            else if (GameGrid.selectedAnimal > 0 && GameGrid.selectedAnimal < 4)
+            else if (selectedAnimal > 0 && selectedAnimal < 4)
             {
-                currentBunny = Level.BunnyList[GameGrid.selectedAnimal - 1];
+                currentBunny = Level.BunnyList[selectedAnimal - 1];
             }
         }
 
@@ -66,9 +66,9 @@ namespace Zekohop
             if (selectedAnimal > 3)
             {
                 // mrdas lisice
-                Fox.MoveFox(Level.FoxList[GameGrid.selectedAnimal - 1 - 3], userInput);
+                Fox.MoveFox();
             }
-            else if (GameGrid.selectedAnimal > 0 && GameGrid.selectedAnimal < 4)
+            else if (selectedAnimal > 0 && selectedAnimal < 4)
             {
                 Bunny.MoveBunny(userInput);
                 //mrdas zeceve
