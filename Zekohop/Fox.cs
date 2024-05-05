@@ -55,13 +55,10 @@ namespace Zekohop
                     break;
             }
 
-
             FoxCount++;
             FoxId = FoxCount + 3;
 
             InterfaceColor = InterfaceColors[FoxCount % 2];
-
-
         }
 
 
@@ -95,13 +92,10 @@ namespace Zekohop
         public string Orientation
         { get => _orientation; set => _orientation = value; }
 
-
-
         /// <summary>
         /// List of colors that will be used to display foxes.
         /// </summary>
         public ConsoleColor InterfaceColor { get => interfaceColor; set => interfaceColor = value; }
-
 
         /// <summary>
         /// String representing foxes on the display. Symbols represent the orientation. Possible variations "< <" "> >" "V" "^"
@@ -116,8 +110,6 @@ namespace Zekohop
             FoxCount = 0;
         }
 
-
-
         /// <summary>
         /// Used only at the intialization of the level.
         /// </summary>
@@ -127,7 +119,6 @@ namespace Zekohop
             GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
             GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
         }
-
 
         /// <summary>
         /// Writes the int parameter value in the grid. It is usually 0 to delete the fox from the old place and theFoxID to write in the values to the new place.
@@ -208,7 +199,6 @@ namespace Zekohop
             }
         }
 
-
         /// <summary>
         /// Performes the movement of the fox object. System deletes the Fox from the old position (writes 0 in that place) and write the fox values to the new position.
         /// </summary>
@@ -225,238 +215,237 @@ namespace Zekohop
                 GameGrid.IncreaseMovesCount();
             }
         }
-
-
-
-
-
-
-        /*
-                 /// <summary>
-        /// Performes the movement of the fox object. System deletes the Fox from the old position (writes 0 in that place) and write the fox values to the new position.
-        /// </summary>
-        public static void MoveFox()
-        {
-            //var direction = GameGrid.userInput;
-            var theFox = GameGrid.currentFox;
-
-            if (IsFoxWithinBoundsAfterTheMovement() && IsAdjacentFieldEmpty()) // ako nije out of bounds i ako je susedno polje 0
-            {
-                WriteValuesToFoxCoords(0); // deletes the fox from the old position
-
-                //switch (theFox.Orientation)
-                //{
-                //    case "Horizontal Left":
-                //    case "Horizontal Right":
-
-                //        UpdateHeadAndTailPosToNew();
-                //        break;
-
-                //    case "Vertical Up":
-                //    case "Vertical Down":
-
-                //direction = ConvertVerticalInputTo1();
-                UpdateHeadAndTailPosToNew();
-                //        break;
-                //}
-                WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
-
-                GameGrid.IncreaseMovesCount();
-            }
-        }
-
-
-                public static void MoveFox(Fox theFox, int direction)
-                {
-                    // horizontalne lisice
-
-                    // gleda da li je susedno polje 0
-                    // ako jeste pomera se
-
-                    switch (direction)
-                    {
-                        case -1:
-                            if (theFox.Orientation == "Horizontal Left")  // glava gleda u negativan x
-                            {
-                                // mrda glavu u levo, rep prati
-                                if (theFox.HeadPos.col - 1 >= 0) // ako nije out of bounds
-                                {
-                                    if (GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col - 1] == 0) // ako polje sa leve strane je prazno
-                                    {
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-
-                                        theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col - 1);
-                                        theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col - 1);
-
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-
-                                        GameGrid.IncreaseMovesCount();
-
-                                    }
-                                }
-                            }
-                            else if (theFox.Orientation == "Horizontal Right") // glava gleda u pozitivan x
-                            {
-                                if (theFox.TailPos.col - 1 >= 0) // ako nije out of bounds
-                                {
-                                    if (GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col - 1] == 0) // ako polje sa desne strane je prazno
-                                    {
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-
-                                        theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col - 1);
-                                        theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col - 1);
-
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                        GameGrid.IncreaseMovesCount();
-                                    }
-                                }
-                            }
-                            break;
-
-                        case 1:
-                            if (theFox.Orientation == "Horizontal Left")  // glava gleda u negativan x
-                            {
-                                if (theFox.TailPos.col + 1 < GameGrid.GridSize) // ako nije out of bounds
-                                {
-                                    Console.WriteLine($"Direction = {direction}. Nisam out of bounds! mrda rep glava prati");
-                                    if (GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col + 1] == 0) // ako polje sa desne strane je prazno
-                                    {
-                                        Console.WriteLine($"Ispunjeni uslovi za pomeranje!");
-                                        //var temp = new Tuple<int, int>(0, -1);
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-
-                                        theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col + 1);
-                                        theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col + 1);
-
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                        GameGrid.IncreaseMovesCount();
-                                    }
-                                }
-                            }
-                            else if (theFox.Orientation == "Horizontal Right")
-                            {
-                                // mrda glavu u desno, rep prati
-                                if (theFox.HeadPos.col + 1 < GameGrid.GridSize) // ako nije out of bounds
-                                {
-                                    Console.WriteLine($"Direction = {direction}. Nisam out of bounds!");
-
-                                    if (GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col + 1] == 0) // ukoliko je polje sa desne strane prazno
-                                    {
-                                        Console.WriteLine($"Ispunjeni uslovi za pomeranje! mrda glavu rep prati");
-                                        // prepravi vrednost grida na nulu 
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-
-                                        theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col + 1);
-                                        theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col + 1);
-
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                        GameGrid.IncreaseMovesCount();
-                                    }
-                                }
-                            }
-
-                            break;
-
-                        case -2: // ide na gore, ka negativnim vrednostima redova
-
-                            if (theFox.Orientation == "Vertical Up") // gleda na gore
-                            {
-                                // ide glavom na gore
-                                if (theFox.HeadPos.row - 1 >= 0) // ako nije out of bounds
-                                {
-                                    if (GameGrid.Grid[theFox.HeadPos.row - 1, theFox.HeadPos.col] == 0) // ako polje je polje iznad prazno
-                                    {
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-
-                                        theFox.HeadPos = (theFox.HeadPos.row - 1, theFox.HeadPos.col);
-                                        theFox.TailPos = (theFox.TailPos.row - 1, theFox.TailPos.col);
-
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                        GameGrid.IncreaseMovesCount();
-                                    }
-                                }
-                            }
-                            else if (theFox.Orientation == "Vertical Down") // gleda na dole
-                            {
-                                // ide dupetom na gore
-                                if (theFox.TailPos.row - 1 >= 0) // ako nije out of bounds
-                                {
-                                    if (GameGrid.Grid[theFox.TailPos.row - 1, theFox.TailPos.col] == 0) // ako polje sa desne strane je prazno
-                                    {
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-
-                                        theFox.HeadPos = (theFox.HeadPos.row - 1, theFox.HeadPos.col);
-                                        theFox.TailPos = (theFox.TailPos.row - 1, theFox.TailPos.col);
-
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                        GameGrid.IncreaseMovesCount();
-                                    }
-                                }
-                            }
-
-                            break;
-
-                        case 2: // ide na dole ka pozitivnim vrednostima redova
-
-                            if (theFox.Orientation == "Vertical Up") // gleda na gore
-                            {
-                                // ide dupetom na dole
-                                if (theFox.TailPos.row + 1 < GameGrid.GridSize) // ako nije out of bounds
-                                {
-                                    if (GameGrid.Grid[theFox.TailPos.row + 1, theFox.TailPos.col] == 0) // ako polje sa desne strane je prazno
-                                    {
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-
-                                        theFox.HeadPos = (theFox.HeadPos.row + 1, theFox.HeadPos.col);
-                                        theFox.TailPos = (theFox.TailPos.row + 1, theFox.TailPos.col);
-
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-
-                                        GameGrid.IncreaseMovesCount();
-                                    }
-                                }
-                            }
-                            else if (theFox.Orientation == "Vertical Down") // gleda na dole
-                            {
-                                // ide glavom na dole
-
-                                // mrda glavu u desno, rep prati
-                                if (theFox.HeadPos.row + 1 < GameGrid.GridSize) // ako nije out of bounds
-                                {
-                                    if (GameGrid.Grid[theFox.HeadPos.row + 1, theFox.HeadPos.col] == 0) // ukoliko je polje sa desne strane prazno
-                                    {
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
-
-                                        theFox.HeadPos = (theFox.HeadPos.row + 1, theFox.HeadPos.col);
-                                        theFox.TailPos = (theFox.TailPos.row + 1, theFox.TailPos.col);
-
-                                        GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-                                        GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-                                        GameGrid.IncreaseMovesCount();
-                                    }
-                                }
-                            }
-                            break;
-                    }
-
-                }
-        */
-
-
     }
 }
+
+
+
+
+
+
+
+/*
+         /// <summary>
+/// Performes the movement of the fox object. System deletes the Fox from the old position (writes 0 in that place) and write the fox values to the new position.
+/// </summary>
+public static void MoveFox()
+{
+    //var direction = GameGrid.userInput;
+    var theFox = GameGrid.currentFox;
+
+    if (IsFoxWithinBoundsAfterTheMovement() && IsAdjacentFieldEmpty()) // ako nije out of bounds i ako je susedno polje 0
+    {
+        WriteValuesToFoxCoords(0); // deletes the fox from the old position
+
+        //switch (theFox.Orientation)
+        //{
+        //    case "Horizontal Left":
+        //    case "Horizontal Right":
+
+        //        UpdateHeadAndTailPosToNew();
+        //        break;
+
+        //    case "Vertical Up":
+        //    case "Vertical Down":
+
+        //direction = ConvertVerticalInputTo1();
+        UpdateHeadAndTailPosToNew();
+        //        break;
+        //}
+        WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
+
+        GameGrid.IncreaseMovesCount();
+    }
+}
+
+
+        public static void MoveFox(Fox theFox, int direction)
+        {
+            // horizontalne lisice
+
+            // gleda da li je susedno polje 0
+            // ako jeste pomera se
+
+            switch (direction)
+            {
+                case -1:
+                    if (theFox.Orientation == "Horizontal Left")  // glava gleda u negativan x
+                    {
+                        // mrda glavu u levo, rep prati
+                        if (theFox.HeadPos.col - 1 >= 0) // ako nije out of bounds
+                        {
+                            if (GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col - 1] == 0) // ako polje sa leve strane je prazno
+                            {
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+
+                                theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col - 1);
+                                theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col - 1);
+
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+
+                                GameGrid.IncreaseMovesCount();
+
+                            }
+                        }
+                    }
+                    else if (theFox.Orientation == "Horizontal Right") // glava gleda u pozitivan x
+                    {
+                        if (theFox.TailPos.col - 1 >= 0) // ako nije out of bounds
+                        {
+                            if (GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col - 1] == 0) // ako polje sa desne strane je prazno
+                            {
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+
+                                theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col - 1);
+                                theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col - 1);
+
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                GameGrid.IncreaseMovesCount();
+                            }
+                        }
+                    }
+                    break;
+
+                case 1:
+                    if (theFox.Orientation == "Horizontal Left")  // glava gleda u negativan x
+                    {
+                        if (theFox.TailPos.col + 1 < GameGrid.GridSize) // ako nije out of bounds
+                        {
+                            Console.WriteLine($"Direction = {direction}. Nisam out of bounds! mrda rep glava prati");
+                            if (GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col + 1] == 0) // ako polje sa desne strane je prazno
+                            {
+                                Console.WriteLine($"Ispunjeni uslovi za pomeranje!");
+                                //var temp = new Tuple<int, int>(0, -1);
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+
+                                theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col + 1);
+                                theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col + 1);
+
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                GameGrid.IncreaseMovesCount();
+                            }
+                        }
+                    }
+                    else if (theFox.Orientation == "Horizontal Right")
+                    {
+                        // mrda glavu u desno, rep prati
+                        if (theFox.HeadPos.col + 1 < GameGrid.GridSize) // ako nije out of bounds
+                        {
+                            Console.WriteLine($"Direction = {direction}. Nisam out of bounds!");
+
+                            if (GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col + 1] == 0) // ukoliko je polje sa desne strane prazno
+                            {
+                                Console.WriteLine($"Ispunjeni uslovi za pomeranje! mrda glavu rep prati");
+                                // prepravi vrednost grida na nulu 
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+
+                                theFox.HeadPos = (theFox.HeadPos.row, theFox.HeadPos.col + 1);
+                                theFox.TailPos = (theFox.TailPos.row, theFox.TailPos.col + 1);
+
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                GameGrid.IncreaseMovesCount();
+                            }
+                        }
+                    }
+
+                    break;
+
+                case -2: // ide na gore, ka negativnim vrednostima redova
+
+                    if (theFox.Orientation == "Vertical Up") // gleda na gore
+                    {
+                        // ide glavom na gore
+                        if (theFox.HeadPos.row - 1 >= 0) // ako nije out of bounds
+                        {
+                            if (GameGrid.Grid[theFox.HeadPos.row - 1, theFox.HeadPos.col] == 0) // ako polje je polje iznad prazno
+                            {
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+
+                                theFox.HeadPos = (theFox.HeadPos.row - 1, theFox.HeadPos.col);
+                                theFox.TailPos = (theFox.TailPos.row - 1, theFox.TailPos.col);
+
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                GameGrid.IncreaseMovesCount();
+                            }
+                        }
+                    }
+                    else if (theFox.Orientation == "Vertical Down") // gleda na dole
+                    {
+                        // ide dupetom na gore
+                        if (theFox.TailPos.row - 1 >= 0) // ako nije out of bounds
+                        {
+                            if (GameGrid.Grid[theFox.TailPos.row - 1, theFox.TailPos.col] == 0) // ako polje sa desne strane je prazno
+                            {
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+
+                                theFox.HeadPos = (theFox.HeadPos.row - 1, theFox.HeadPos.col);
+                                theFox.TailPos = (theFox.TailPos.row - 1, theFox.TailPos.col);
+
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                GameGrid.IncreaseMovesCount();
+                            }
+                        }
+                    }
+
+                    break;
+
+                case 2: // ide na dole ka pozitivnim vrednostima redova
+
+                    if (theFox.Orientation == "Vertical Up") // gleda na gore
+                    {
+                        // ide dupetom na dole
+                        if (theFox.TailPos.row + 1 < GameGrid.GridSize) // ako nije out of bounds
+                        {
+                            if (GameGrid.Grid[theFox.TailPos.row + 1, theFox.TailPos.col] == 0) // ako polje sa desne strane je prazno
+                            {
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+
+                                theFox.HeadPos = (theFox.HeadPos.row + 1, theFox.HeadPos.col);
+                                theFox.TailPos = (theFox.TailPos.row + 1, theFox.TailPos.col);
+
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+
+                                GameGrid.IncreaseMovesCount();
+                            }
+                        }
+                    }
+                    else if (theFox.Orientation == "Vertical Down") // gleda na dole
+                    {
+                        // ide glavom na dole
+
+                        // mrda glavu u desno, rep prati
+                        if (theFox.HeadPos.row + 1 < GameGrid.GridSize) // ako nije out of bounds
+                        {
+                            if (GameGrid.Grid[theFox.HeadPos.row + 1, theFox.HeadPos.col] == 0) // ukoliko je polje sa desne strane prazno
+                            {
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = 0;
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = 0;
+
+                                theFox.HeadPos = (theFox.HeadPos.row + 1, theFox.HeadPos.col);
+                                theFox.TailPos = (theFox.TailPos.row + 1, theFox.TailPos.col);
+
+                                GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
+                                GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+                                GameGrid.IncreaseMovesCount();
+                            }
+                        }
+                    }
+                    break;
+            }
+
+        }
+*/
