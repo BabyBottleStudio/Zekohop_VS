@@ -138,16 +138,22 @@ namespace Zekohop
         private static void UpdateHeadAndTailPosToNew()
         {
             var direction = GameGrid.userInput;
-            var (rowIncrement, columnIncrement) = (0, direction);
-
-            if (Math.Abs(direction) == 2)
+            //var (rowIncrement, columnIncrement) = (0, direction);
+            
+            if (direction == 1 || direction == -1)
             {
-                direction = ConvertVerticalInputTo1();
-                (rowIncrement, columnIncrement) = (direction, 0);
+                GameGrid.currentFox.HeadPos = (GameGrid.currentFox.HeadPos.row, GameGrid.currentFox.HeadPos.col + direction);
+                GameGrid.currentFox.TailPos = (GameGrid.currentFox.TailPos.row, GameGrid.currentFox.TailPos.col + direction);
             }
+            else if (direction == 2 || direction == -2)
+            {
+                //direction = ConvertVerticalInputTo1();
+                //(rowIncrement, columnIncrement) = (direction / 2, 0);
+                GameGrid.currentFox.HeadPos = (GameGrid.currentFox.HeadPos.row + direction / 2, GameGrid.currentFox.HeadPos.col);
+                GameGrid.currentFox.TailPos = (GameGrid.currentFox.TailPos.row + direction / 2, GameGrid.currentFox.TailPos.col);
+            }
+           
 
-            GameGrid.currentFox.HeadPos = (GameGrid.currentFox.HeadPos.row + rowIncrement, GameGrid.currentFox.HeadPos.col + columnIncrement);
-            GameGrid.currentFox.TailPos = (GameGrid.currentFox.TailPos.row + rowIncrement, GameGrid.currentFox.TailPos.col + columnIncrement);
         }
 
         /// <summary>
@@ -209,19 +215,7 @@ namespace Zekohop
             if (IsFoxWithinBoundsAfterTheMovement() && IsAdjacentFieldEmpty()) // ako nije out of bounds i ako je susedno polje 0
             {
                 WriteValuesToFoxCoords(0); // deletes the fox from the old position
-                switch (theFox.Orientation)
-                {
-                    case "Horizontal Left":
-                    case "Horizontal Right":
-                        UpdateHeadAndTailPosToNew();
-                        break;
-                    case "Vertical Up":
-                    case "Vertical Down":
-                        UpdateHeadAndTailPosToNew();
-                        break;
-                }
-
-
+                UpdateHeadAndTailPosToNew();
                 WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
 
                 GameGrid.IncreaseMovesCount();

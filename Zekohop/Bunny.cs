@@ -53,23 +53,6 @@ namespace Zekohop
             //BunnyList.Add(theBunny);
         }
 
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
         
         private static bool IsBunnyGoingToJupmOutOfTheGrid() // da li je ovaj test neophodan ili samo mi treba bolja logika dole u funkcijijijiji. Ili ovaj test sprecava dalje proracune ako se nije ispunio
         {
