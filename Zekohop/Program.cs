@@ -10,6 +10,8 @@ namespace Zekohop
     {
         static void Main(string[] args)
         {
+            
+
             Level.LevelIndex = 1;
 
             while (true)

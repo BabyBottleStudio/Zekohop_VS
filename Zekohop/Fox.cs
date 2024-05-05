@@ -214,7 +214,6 @@ namespace Zekohop
                         if (Math.Abs(direction) == 1)
                         {
                             UpdateHeadAndTailPosToNew(0, direction);
-                            
                         }
                         break;
                     case "Vertical Up":                                 // glava gleda na gore            
@@ -224,7 +223,6 @@ namespace Zekohop
                         {
                             direction = ConvertVerticalInputTo1();
                             UpdateHeadAndTailPosToNew(direction, 0);
-                            
                         }
                         break;
                 }
