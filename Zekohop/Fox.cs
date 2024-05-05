@@ -209,7 +209,19 @@ namespace Zekohop
             if (IsFoxWithinBoundsAfterTheMovement() && IsAdjacentFieldEmpty()) // ako nije out of bounds i ako je susedno polje 0
             {
                 WriteValuesToFoxCoords(0); // deletes the fox from the old position
-                UpdateHeadAndTailPosToNew();
+                switch (theFox.Orientation)
+                {
+                    case "Horizontal Left":
+                    case "Horizontal Right":
+                        UpdateHeadAndTailPosToNew();
+                        break;
+                    case "Vertical Up":
+                    case "Vertical Down":
+                        UpdateHeadAndTailPosToNew();
+                        break;
+                }
+
+
                 WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
 
                 GameGrid.IncreaseMovesCount();

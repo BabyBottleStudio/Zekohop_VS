@@ -45,9 +45,7 @@ namespace Zekohop
 
 
 
-        /***************************
- ***   B U N N Y ! ! !   ***
- ***************************/
+
 
         public static void WriteBunnyIdToTheGridInitial(Bunny theBunny)
         {
@@ -56,8 +54,26 @@ namespace Zekohop
         }
 
 
-        private static bool IsBunnyGoingToJupmOutOfTheGrid(int direction) // da li je ovaj test neophodan ili samo mi treba bolja logika dole u funkcijijijiji. Ili ovaj test sprecava dalje proracune ako se nije ispunio
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+        
+        private static bool IsBunnyGoingToJupmOutOfTheGrid() // da li je ovaj test neophodan ili samo mi treba bolja logika dole u funkcijijijiji. Ili ovaj test sprecava dalje proracune ako se nije ispunio
         {
+            int direction = GameGrid.userInput;
             //SetSelectedAnimal();
             // Initial test if the bunny is going to jump out of the grid
             (int y, int x) = GameGrid.currentBunny.CurrentPos;
@@ -97,9 +113,12 @@ namespace Zekohop
             }
             return true;
         }
+        
 
-        private static bool IsBunnyLegitToJump(int direction) // this method checks if the selected bunny is going to jump over the fox, mushroom or another bunny and retunrs bool
+        private static bool IsBunnyLegitToJump() // this method checks if the selected bunny is going to jump over the fox, mushroom or another bunny and retunrs bool
         {
+            int direction = GameGrid.userInput;
+
             // values are inverted because they have more logic that way. 
             (int y, int x) = GameGrid.currentBunny.CurrentPos; // ovo isto napraviti kao public parametar 
 
@@ -136,8 +155,9 @@ namespace Zekohop
             return false;
         }
 
-        private static (int a, int b)? GetPlaceToHopTo(int direction)
+        private static (int a, int b)? GetPlaceToHopTo()
         {
+            int direction = GameGrid.userInput;
             (int y, int x) = GameGrid.currentBunny.CurrentPos; // ovo isto napraviti kao public parametar 
 
             switch (direction)
@@ -185,8 +205,9 @@ namespace Zekohop
             return null;
         }
 
-        public static void MoveBunny(int direction)
+        public static void MoveBunny()
         {
+            int direction = GameGrid.userInput;
             // direction
             // <= -1  1 =>
 
@@ -198,7 +219,7 @@ namespace Zekohop
 
             (int a, int b)? hopTo = null;
 
-            if (IsBunnyGoingToJupmOutOfTheGrid(direction) && IsBunnyLegitToJump(direction))
+            if (IsBunnyGoingToJupmOutOfTheGrid() && IsBunnyLegitToJump())
             {
 
                 // a da napravimo privremenu listu koju mozemo da testiramo
@@ -206,7 +227,7 @@ namespace Zekohop
                 // yec je recimo na koord 1 1. Cim se selektuje, da se sakupe validna polja za kretanje
                 // 
 
-                hopTo = GetPlaceToHopTo(direction);
+                hopTo = GetPlaceToHopTo();
             }
 
             if (HopToField(hopTo)) // treba videti kako da se selekcija zeca iskoristi i ovde da se ne ubacuje kao paramtar

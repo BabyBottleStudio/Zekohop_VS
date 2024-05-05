@@ -70,7 +70,7 @@ namespace Zekohop
             }
             else if (selectedAnimal > 0 && selectedAnimal < 4)
             {
-                Bunny.MoveBunny(userInput);
+                Bunny.MoveBunny();
                 //mrdas zeceve
             }
         }
