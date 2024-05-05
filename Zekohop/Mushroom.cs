@@ -21,7 +21,10 @@ namespace Zekohop
         public (int row, int col) Position { get => _pos; set => _pos = value; }
 
 
-
+        /// <summary>
+        /// Method for adding the Mushroom objects into the level.
+        /// </summary>
+        /// <param name="theMushroom"></param>
         public static void AddMushroom(Mushroom theMushroom)
         {
             // if the hole is covered with the mushroom, remove it from the list

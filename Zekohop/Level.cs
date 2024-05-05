@@ -21,19 +21,29 @@ namespace Zekohop
 
         public static int AllLevelsCount => _allLevelsCount;
 
-        internal static List<Mushroom> MushroomList { get => mushroomList; set => mushroomList = value; }
-        internal static List<Bunny> BunnyList { get => bunnyList; set => bunnyList = value; }
-        internal static List<Fox> FoxList { get => foxList; set => foxList = value; }
-        
-        
-        internal static int LevelIndex { get => levelIndex; set => levelIndex = value; } // handles the current level
-        internal static int NumberOfMOves { get => numberOfMOves; set => numberOfMOves = value; } // represents the number of minimal moves neededt to solve the level
+        internal static List<Mushroom> MushroomList
+        { get => mushroomList; set => mushroomList = value; }
+
+        internal static List<Bunny> BunnyList
+        { get => bunnyList; set => bunnyList = value; }
+
+        internal static List<Fox> FoxList
+        { get => foxList; set => foxList = value; }
+
+
+        internal static int LevelIndex
+        { get => levelIndex; set => levelIndex = value; } // handles the current level
+
+        internal static int NumberOfMOves
+        { get => numberOfMOves; set => numberOfMOves = value; } // represents the number of minimal moves neededt to solve the level
 
 
 
 
 
-
+        /// <summary>
+        /// Adds the data to the level, and instantiate objects.
+        /// </summary>
         public static void LoadLevel()
         {
             SetLevelData();
@@ -55,6 +65,9 @@ namespace Zekohop
         }
 
 
+        /// <summary>
+        /// Cleans up the old data and loads the new data into the level.
+        /// </summary>
         internal static void SetLevelData()
         {
             // cleaning up the data before generating the level
