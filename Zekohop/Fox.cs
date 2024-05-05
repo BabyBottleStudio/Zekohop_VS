@@ -58,26 +58,59 @@ namespace Zekohop
 
             FoxCount++;
             FoxId = FoxCount + 3;
-            InterfaceColor = InterfaceColors[FoxCount - 1];
+
+            InterfaceColor = InterfaceColors[FoxCount % 2];
+
+
         }
 
+
+        /// <summary>
+        /// Gets and sets the count of foxes instatiated in the level. 
+        /// </summary>
         public static int FoxCount
         { get => foxCount; set => foxCount = value; }
 
+        /// <summary>
+        /// Gets and sets the head position of the Fox instance.
+        /// </summary>
         public (int row, int col) HeadPos
         { get => _headPos; set => _headPos = value; }
 
+        /// <summary>
+        /// Gets and sets the tail position of the Fox instance.
+        /// </summary>
         public (int row, int col) TailPos
         { get => _tailPos; set => _tailPos = value; }
 
+        /// <summary>
+        /// Unique ID of the fox. The ID is assigned upon instantiation. It represents the ordinal number of the instance + 3. This value is used to write the fox into the grid. It is either 4 or 5.
+        /// </summary>
         public int FoxId
         { get => foxId; set => foxId = value; }
 
+        /// <summary>
+        /// Orientation describes the Fox's alignment in space. It also distinguishes between the head and the tail sides. There are four orientations: Horizontal Left, Horizontal Right, Vertical Up, Vertical Down.
+        /// </summary>
         public string Orientation
         { get => _orientation; set => _orientation = value; }
+
+
+
+        /// <summary>
+        /// List of colors that will be used to display foxes.
+        /// </summary>
         public ConsoleColor InterfaceColor { get => interfaceColor; set => interfaceColor = value; }
+
+
+        /// <summary>
+        /// String representing foxes on the display. Symbols represent the orientation. Possible variations "< <" "> >" "V" "^"
+        /// </summary>
         public string DisplayIcon { get => displayIcon; set => displayIcon = value; }
 
+        /// <summary>
+        /// Resets the fox count variabile. Used when loading new level.
+        /// </summary>
         public static void ResetFoxCount()
         {
             FoxCount = 0;
@@ -85,12 +118,10 @@ namespace Zekohop
 
 
 
-
-        /***********************
- ***   F O X ! ! !   ***
- ***********************/
-
-
+        /// <summary>
+        /// Used only at the intialization of the level.
+        /// </summary>
+        /// <param name="theFox"></param>
         public static void WriteFoxIdToTheGrid(Fox theFox) // ovo sluzi za inicijalizaciju nivoa tako da se prilikom pokretanja ove metode u Levels, desava kreiranje instanci i mora da se fox ufura kao parametar
         {
             GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
@@ -99,19 +130,33 @@ namespace Zekohop
             // FoxList.Add(theFox);
         }
 
-        private static void WriteCurrentFoxValues(int value)
+        private static void WriteValuesToFoxCoords(int value)
         {
             GameGrid.Grid[GameGrid.currentFox.HeadPos.row, GameGrid.currentFox.HeadPos.col] = value;
             GameGrid.Grid[GameGrid.currentFox.TailPos.row, GameGrid.currentFox.TailPos.col] = value;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rowIncrement"></param>
+        /// <param name="columnIncrement"></param>
         private static void UpdateHeadAndTailPosToNew(int rowIncrement, int columnIncrement)
         {
+            //var direction = GameGrid.userInput;
+            //var (rowIncrement, columnIncrement) = (0, direction);
+
+
+
             GameGrid.currentFox.HeadPos = (GameGrid.currentFox.HeadPos.row + rowIncrement, GameGrid.currentFox.HeadPos.col + columnIncrement);
             GameGrid.currentFox.TailPos = (GameGrid.currentFox.TailPos.row + rowIncrement, GameGrid.currentFox.TailPos.col + columnIncrement);
         }
 
-        private static bool IsFoxOutOfBounds()
+        /// <summary>
+        /// Test if movement of the Fox object is going to be out of bounds of the grid after the movement. Returns True if it is safe to move to either direction.
+        /// </summary>
+        /// <returns></returns>
+        private static bool IsFoxWithinBoundsAfterTheMovement()
         {
             var direction = GameGrid.userInput;
             var theFox = GameGrid.currentFox;
@@ -129,8 +174,20 @@ namespace Zekohop
 
         }
 
+
+        /// <summary>
+        /// Using vertical arrows returns -2 or 2. In order to use them in methods, they need to be converted to -1 and 1 by dividing the initial value by 2.
+        /// (-2 / 2 = -1); (2 / 2 = 1);
+        /// </summary>
+        /// <returns></returns>
         private static int ConvertVerticalInputTo1() => GameGrid.userInput / 2;
 
+
+
+        /// <summary>
+        /// Fox can't go through or jump over the obstacles. System has to check if the adjasent field empty.
+        /// </summary>
+        /// <returns></returns>
         private static bool IsAdjacentFieldEmpty()
         {
             var direction = GameGrid.userInput;
@@ -147,16 +204,17 @@ namespace Zekohop
             }
         }
 
-
-        // ako ima Horizontal u imenu onda svakak moze da se krece samo levo ili desno i Vertical ide gore dole
-        public static void MoveFox() // ovakve stvari bi trebalo videti da se izbace. Sve sta ne mora da bude parametar skloniti da vuce iz podataka Valjda
+        /// <summary>
+        /// Performes the movement of the fox object. System deletes the Fox from the old position (writes 0 in that place) and write the fox values to the new position.
+        /// </summary>
+        public static void MoveFox()
         {
             var direction = GameGrid.userInput;
             var theFox = GameGrid.currentFox;
 
-            if (IsFoxOutOfBounds() && IsAdjacentFieldEmpty()) // ako nije out of bounds i ako je susedno polje 0
+            if (IsFoxWithinBoundsAfterTheMovement() && IsAdjacentFieldEmpty()) // ako nije out of bounds i ako je susedno polje 0
             {
-                WriteCurrentFoxValues(0); // deletes the fox from the old position
+                WriteValuesToFoxCoords(0); // deletes the fox from the old position
 
                 switch (theFox.Orientation)
                 {
@@ -164,22 +222,19 @@ namespace Zekohop
                     case "Horizontal Right":
 
                         UpdateHeadAndTailPosToNew(0, direction);
-
                         break;
+
                     case "Vertical Up":
                     case "Vertical Down":
 
                         direction = ConvertVerticalInputTo1();
                         UpdateHeadAndTailPosToNew(direction, 0);
-
                         break;
                 }
-                WriteCurrentFoxValues(theFox.FoxId); // writes the fox to the new position
+                WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
 
                 GameGrid.IncreaseMovesCount();
             }
-
-
         }
 
 
