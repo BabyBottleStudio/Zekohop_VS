@@ -126,10 +126,13 @@ namespace Zekohop
         {
             GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
             GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
-
-            // FoxList.Add(theFox);
         }
 
+
+        /// <summary>
+        /// Writes the int parameter value in the grid. It is usually 0 to delete the fox from the old place and theFoxID to write in the values to the new place.
+        /// </summary>
+        /// <param name="value"></param>
         private static void WriteValuesToFoxCoords(int value)
         {
             GameGrid.Grid[GameGrid.currentFox.HeadPos.row, GameGrid.currentFox.HeadPos.col] = value;
@@ -137,16 +140,20 @@ namespace Zekohop
         }
 
         /// <summary>
-        /// 
+        /// Updates the values of the Fox coordinates to a new value.
         /// </summary>
         /// <param name="rowIncrement"></param>
         /// <param name="columnIncrement"></param>
-        private static void UpdateHeadAndTailPosToNew(int rowIncrement, int columnIncrement)
+        private static void UpdateHeadAndTailPosToNew()
         {
-            //var direction = GameGrid.userInput;
-            //var (rowIncrement, columnIncrement) = (0, direction);
+            var direction = GameGrid.userInput;
+            var (rowIncrement, columnIncrement) = (0, direction);
 
-
+            if (Math.Abs(direction) == 2)
+            {
+                direction = ConvertVerticalInputTo1();
+                (rowIncrement, columnIncrement) = (direction, 0);
+            }
 
             GameGrid.currentFox.HeadPos = (GameGrid.currentFox.HeadPos.row + rowIncrement, GameGrid.currentFox.HeadPos.col + columnIncrement);
             GameGrid.currentFox.TailPos = (GameGrid.currentFox.TailPos.row + rowIncrement, GameGrid.currentFox.TailPos.col + columnIncrement);
@@ -174,15 +181,12 @@ namespace Zekohop
 
         }
 
-
         /// <summary>
         /// Using vertical arrows returns -2 or 2. In order to use them in methods, they need to be converted to -1 and 1 by dividing the initial value by 2.
         /// (-2 / 2 = -1); (2 / 2 = 1);
         /// </summary>
         /// <returns></returns>
         private static int ConvertVerticalInputTo1() => GameGrid.userInput / 2;
-
-
 
         /// <summary>
         /// Fox can't go through or jump over the obstacles. System has to check if the adjasent field empty.
@@ -204,33 +208,18 @@ namespace Zekohop
             }
         }
 
+
         /// <summary>
         /// Performes the movement of the fox object. System deletes the Fox from the old position (writes 0 in that place) and write the fox values to the new position.
         /// </summary>
         public static void MoveFox()
         {
-            var direction = GameGrid.userInput;
             var theFox = GameGrid.currentFox;
 
             if (IsFoxWithinBoundsAfterTheMovement() && IsAdjacentFieldEmpty()) // ako nije out of bounds i ako je susedno polje 0
             {
                 WriteValuesToFoxCoords(0); // deletes the fox from the old position
-
-                switch (theFox.Orientation)
-                {
-                    case "Horizontal Left":
-                    case "Horizontal Right":
-
-                        UpdateHeadAndTailPosToNew(0, direction);
-                        break;
-
-                    case "Vertical Up":
-                    case "Vertical Down":
-
-                        direction = ConvertVerticalInputTo1();
-                        UpdateHeadAndTailPosToNew(direction, 0);
-                        break;
-                }
+                UpdateHeadAndTailPosToNew();
                 WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
 
                 GameGrid.IncreaseMovesCount();
@@ -242,8 +231,41 @@ namespace Zekohop
 
 
 
-
         /*
+                 /// <summary>
+        /// Performes the movement of the fox object. System deletes the Fox from the old position (writes 0 in that place) and write the fox values to the new position.
+        /// </summary>
+        public static void MoveFox()
+        {
+            //var direction = GameGrid.userInput;
+            var theFox = GameGrid.currentFox;
+
+            if (IsFoxWithinBoundsAfterTheMovement() && IsAdjacentFieldEmpty()) // ako nije out of bounds i ako je susedno polje 0
+            {
+                WriteValuesToFoxCoords(0); // deletes the fox from the old position
+
+                //switch (theFox.Orientation)
+                //{
+                //    case "Horizontal Left":
+                //    case "Horizontal Right":
+
+                //        UpdateHeadAndTailPosToNew();
+                //        break;
+
+                //    case "Vertical Up":
+                //    case "Vertical Down":
+
+                //direction = ConvertVerticalInputTo1();
+                UpdateHeadAndTailPosToNew();
+                //        break;
+                //}
+                WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
+
+                GameGrid.IncreaseMovesCount();
+            }
+        }
+
+
                 public static void MoveFox(Fox theFox, int direction)
                 {
                     // horizontalne lisice
