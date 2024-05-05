@@ -190,15 +190,15 @@ namespace Zekohop
 
         public static void MoveBunny()
         {
-            int direction = GameGrid.userInput;
+            //int direction = GameGrid.userInput;
             // direction
             // <= -1  1 =>
 
             // -2 ^
             //  2 v
 
-            int x = GameGrid.currentBunny.CurrentPos.col;
-            int y = GameGrid.currentBunny.CurrentPos.row;
+            //int x = GameGrid.currentBunny.CurrentPos.col;
+            //int y = GameGrid.currentBunny.CurrentPos.row;
 
             (int a, int b)? hopTo = null;
 

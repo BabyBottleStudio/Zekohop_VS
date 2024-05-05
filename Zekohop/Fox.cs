@@ -135,25 +135,10 @@ namespace Zekohop
         /// </summary>
         /// <param name="rowIncrement"></param>
         /// <param name="columnIncrement"></param>
-        private static void UpdateHeadAndTailPosToNew()
+        private static void UpdateHeadAndTailPosToNew(int rowIncrement, int columnIncrement)
         {
-            var direction = GameGrid.userInput;
-            //var (rowIncrement, columnIncrement) = (0, direction);
-            
-            if (direction == 1 || direction == -1)
-            {
-                GameGrid.currentFox.HeadPos = (GameGrid.currentFox.HeadPos.row, GameGrid.currentFox.HeadPos.col + direction);
-                GameGrid.currentFox.TailPos = (GameGrid.currentFox.TailPos.row, GameGrid.currentFox.TailPos.col + direction);
-            }
-            else if (direction == 2 || direction == -2)
-            {
-                //direction = ConvertVerticalInputTo1();
-                //(rowIncrement, columnIncrement) = (direction / 2, 0);
-                GameGrid.currentFox.HeadPos = (GameGrid.currentFox.HeadPos.row + direction / 2, GameGrid.currentFox.HeadPos.col);
-                GameGrid.currentFox.TailPos = (GameGrid.currentFox.TailPos.row + direction / 2, GameGrid.currentFox.TailPos.col);
-            }
-           
-
+            GameGrid.currentFox.HeadPos = (GameGrid.currentFox.HeadPos.row + rowIncrement, GameGrid.currentFox.HeadPos.col + columnIncrement);
+            GameGrid.currentFox.TailPos = (GameGrid.currentFox.TailPos.row + rowIncrement, GameGrid.currentFox.TailPos.col + columnIncrement);
         }
 
         /// <summary>
@@ -208,18 +193,40 @@ namespace Zekohop
         /// <summary>
         /// Performes the movement of the fox object. System deletes the Fox from the old position (writes 0 in that place) and write the fox values to the new position.
         /// </summary>
-        public static void MoveFox()
+        public static void MoveFox() // ovakve stvari bi trebalo videti da se izbace. Sve sta ne mora da bude parametar skloniti da vuce iz podataka Valjda
         {
+            var direction = GameGrid.userInput;
             var theFox = GameGrid.currentFox;
 
             if (IsFoxWithinBoundsAfterTheMovement() && IsAdjacentFieldEmpty()) // ako nije out of bounds i ako je susedno polje 0
             {
                 WriteValuesToFoxCoords(0); // deletes the fox from the old position
-                UpdateHeadAndTailPosToNew();
+
+                switch (theFox.Orientation)
+                {
+                    case "Horizontal Left":                             // glava gleda u negativan x
+                    case "Horizontal Right":                            // glava gleda u pozitivan x           
+                        if (Math.Abs(direction) == 1)
+                        {
+                            UpdateHeadAndTailPosToNew(0, direction);
+                        }
+                        break;
+                    case "Vertical Up":                                 // glava gleda na gore            
+                    case "Vertical Down":                               // glava gleda na dole           
+                        
+                        if (Math.Abs(direction) == 2)
+                        {
+                            direction = ConvertVerticalInputTo1();
+                            UpdateHeadAndTailPosToNew(direction, 0);
+                        }
+                        break;
+                }
                 WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
 
                 GameGrid.IncreaseMovesCount();
             }
+
+
         }
     }
 }
