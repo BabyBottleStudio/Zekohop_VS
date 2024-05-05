@@ -65,6 +65,25 @@ namespace Zekohop
         }
 
 
+        public static void JumpToPreviousLevel()
+        {
+            LevelIndex--;
+            if (LevelIndex < 1)
+            {
+                LevelIndex = AllLevelsCount;
+            }
+        }
+
+        public static void JumpToNextLevel()
+        {
+            LevelIndex++;
+            if (LevelIndex > AllLevelsCount)
+            {
+                LevelIndex = 1;
+            }
+        }
+
+
         /// <summary>
         /// Cleans up the old data and loads the new data into the level.
         /// </summary>

@@ -19,6 +19,7 @@ namespace Zekohop
         };
 
         private ConsoleColor interfaceColor;
+        private static ConsoleColor colorIfSelected;
         public static readonly string DisplayIcon = "B";
 
         public Bunny((int x, int y) startPos)
@@ -36,24 +37,19 @@ namespace Zekohop
         public (int row, int col) StartPos { get => _startPos; set => _startPos = value; }
         public static int BunnyCount { get => bunnyCount; set => bunnyCount = value; }
         public ConsoleColor InterfaceColor { get => interfaceColor; set => interfaceColor = value; }
+        public static ConsoleColor ColorIfSelected { get => colorIfSelected; set => colorIfSelected = value; }
 
         public static void ResetBunniesCount()
         {
             BunnyCount = 0;
         }
 
-
-
-
-
-
         public static void WriteBunnyIdToTheGridInitial(Bunny theBunny)
         {
             GameGrid.Grid[theBunny.StartPos.row, theBunny.StartPos.col] = theBunny.Id;
             //BunnyList.Add(theBunny);
         }
-
-        
+                
         private static bool IsBunnyGoingToJupmOutOfTheGrid() // da li je ovaj test neophodan ili samo mi treba bolja logika dole u funkcijijijiji. Ili ovaj test sprecava dalje proracune ako se nije ispunio
         {
             int direction = GameGrid.userInput;
@@ -97,7 +93,6 @@ namespace Zekohop
             return true;
         }
         
-
         private static bool IsBunnyLegitToJump() // this method checks if the selected bunny is going to jump over the fox, mushroom or another bunny and retunrs bool
         {
             int direction = GameGrid.userInput;

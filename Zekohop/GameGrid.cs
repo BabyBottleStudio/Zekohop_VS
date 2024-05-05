@@ -75,13 +75,6 @@ namespace Zekohop
             }
         }
 
-
-
-
-
-
-
-
         public static bool IsThereAWin()
         {
             int count = Level.BunnyList.Count(bunny => HoleList.Contains(bunny.CurrentPos));

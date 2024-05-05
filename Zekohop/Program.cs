@@ -29,25 +29,21 @@ namespace Zekohop
 
                 while (true)
                 {
-                    int userInput = UserInput(GameGrid.selectedAnimal, out GameGrid.selectedAnimal);
+                    Display.GameMenu();
 
+                    int userInput = UserInput(GameGrid.selectedAnimal, out GameGrid.selectedAnimal);
                     GameGrid.userInput = userInput;
 
-                    if (userInput == -99)
+                    if (userInput == -99) // help menu
                     {
-                        // help menu
                         Console.Clear();
                         Display.HelpMenu();
-                        
-                        Console.ReadKey();
+
                         Display.GridAdvanced();
                     }
-                    else if (userInput == -66) // r
+                    else if (userInput == -66) // reset level
                     {
-                        Console.WriteLine();
-                        Console.WriteLine("Restart current level! y/n");
-
-                        ConsoleKeyInfo userChoice = Console.ReadKey();
+                        var userChoice = Display.ResetLevelMenu();
 
                         if (userChoice.Key == ConsoleKey.Y)
                         {
@@ -58,45 +54,25 @@ namespace Zekohop
                             continue;
                         }
                     }
-                    else if (userInput == -23) // s
+                    else if (userInput == -23) // s - Choose the level
                     {
-                        int userChoice;
-                        do
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine($"Enter the level you want to play! (1 - {Level.AllLevelsCount})");
-                        }
-                        while (!int.TryParse(Console.ReadLine(), out userChoice));
-
-                        if (userChoice < 0)
-                        {
-                            userChoice = 1;
-                        }
-                        else if (userChoice > Level.AllLevelsCount)
-                        {
-                            userChoice = Level.AllLevelsCount;
-                        }
-
-                        Level.LevelIndex = userChoice;
+                        Display.EnterLevelIndex();
                         break;
                     }
-                    else if (userInput == -22) // a
+                    else if (userInput == -22) // a load previous level
                     {
-                        Level.LevelIndex--;
-                        if (Level.LevelIndex < 1)
-                        {
-                            Level.LevelIndex = Level.AllLevelsCount;
-                        }
+                        Level.JumpToPreviousLevel();
                         break;
                     }
-                    else if (userInput == -24) // d
+                    else if (userInput == -24) // d load nex level
                     {
-                        Level.LevelIndex++;
-                        if (Level.LevelIndex > Level.AllLevelsCount)
-                        {
-                            Level.LevelIndex = 1;
-                        }
+                        Level.JumpToNextLevel();
                         break;
+                    }
+                    else if (userInput == 666) // invalid input
+                    {
+                        Display.ErrorMessage();
+                        Display.ControlsHelpMenu();
                     }
 
                     GameGrid.SetSelectedAnimal();
@@ -120,7 +96,7 @@ namespace Zekohop
 
         static int UserInput(int currentAnimal, out int selectedAnimal)
         {
-            Display.GameMenu();
+
 
             // User can input arrow keys, number keys 1 - 5, A,S,D 
             // numbers are changing the selection of a current animal in the scene
@@ -210,9 +186,7 @@ namespace Zekohop
                 case ConsoleKey.H:
                     return -99;
                 default:
-                    Console.WriteLine();
-                    Console.WriteLine("Invalid input!");
-                    break;
+                    return 666;
             }
             return 0;
         }
@@ -238,9 +212,12 @@ sistem mora da prati koliko je zeceva na sceni i koliko je  u rupama. Win condit
 
 /// sta treba dodati??? 
 /// 
-/// indikaciju šta je selektovano
-/// prepravi boje za zeceve
-/// treba ubaciti nekakav tutoriajal i objasniti da asd koristis da menjas nivoe i da R resetuje 
+/// indikaciju šta je selektovano sa background color na consoli
+/// 
+/// prebaci u display sta treba da se ubaci u display klasu
+/// 
+/// probaj zvukove da odradis
+///  
 /// 
 ///  refaktoring
 ///  

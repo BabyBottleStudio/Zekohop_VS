@@ -25,6 +25,8 @@ namespace Zekohop
         };
 
         private ConsoleColor interfaceColor; // this info is part of the instance. It is used by the display script to access the color info.
+        
+        private static ConsoleColor colorIfSelected = ConsoleColor.White;
 
         /// <summary>
         /// Constructor activated when Fox instance is created. Head Position is a tupple value reprsenting the row and column of the grid. Orentatnion is a string and it must be provided exactly => "Horizontal Left", "Horizontal Right", "Vertical Up", "Vertical Down". I used it that way so I can figure out what's going on while programing.
@@ -101,6 +103,8 @@ namespace Zekohop
         /// String representing foxes on the display. Symbols represent the orientation. Possible variations "< <" "> >" "V" "^"
         /// </summary>
         public string DisplayIcon { get => displayIcon; set => displayIcon = value; }
+        
+        public static ConsoleColor ColorIfSelected { get => colorIfSelected; set => colorIfSelected = value; }
 
         /// <summary>
         /// Resets the fox count variabile. Used when loading new level.
@@ -139,6 +143,7 @@ namespace Zekohop
         {
             GameGrid.currentFox.HeadPos = (GameGrid.currentFox.HeadPos.row + rowIncrement, GameGrid.currentFox.HeadPos.col + columnIncrement);
             GameGrid.currentFox.TailPos = (GameGrid.currentFox.TailPos.row + rowIncrement, GameGrid.currentFox.TailPos.col + columnIncrement);
+            GameGrid.IncreaseMovesCount();
         }
 
         /// <summary>
@@ -209,6 +214,7 @@ namespace Zekohop
                         if (Math.Abs(direction) == 1)
                         {
                             UpdateHeadAndTailPosToNew(0, direction);
+                            
                         }
                         break;
                     case "Vertical Up":                                 // glava gleda na gore            
@@ -218,12 +224,13 @@ namespace Zekohop
                         {
                             direction = ConvertVerticalInputTo1();
                             UpdateHeadAndTailPosToNew(direction, 0);
+                            
                         }
                         break;
                 }
                 WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
 
-                GameGrid.IncreaseMovesCount();
+
             }
 
 

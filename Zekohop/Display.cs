@@ -69,7 +69,7 @@ namespace Zekohop
         {
             Console.WriteLine();
             Console.WriteLine("Press 'H' for Help.");
-            Console.WriteLine("Use the number keys to select.");
+            Console.WriteLine("Use indicated [] number keys to select.");
             Console.WriteLine(" - Bunnies - ");
 
 
@@ -78,12 +78,14 @@ namespace Zekohop
                 if (i == GameGrid.selectedAnimal - 1)
                 {
                     WriteInColor($"[{ i + 1}] - > ", ConsoleColor.DarkGreen, false);
+                    DrawSelectedBunny(i, "");
                 }
                 else
                 {
                     Console.Write($"[{ i + 1}] - ");
+                    DrawBunny(i, "");
                 }
-                WriteInColor("B", Level.BunnyList[i].InterfaceColor, false);
+                //WriteInColor("B", Level.BunnyList[i].InterfaceColor, false);
                 Console.WriteLine();
             }
 
@@ -95,17 +97,20 @@ namespace Zekohop
                     if (i + 4 == GameGrid.selectedAnimal)
                     {
                         WriteInColor($"[{ i + 4}] - > ", ConsoleColor.DarkGreen, false);
+                        DrawSelectedFox(i);
                     }
                     else
                     {
                         Console.Write($"[{i + 4}] - ");
+                        DrawFox(i);
                     }
-                    WriteInColor($"{Level.FoxList[i].DisplayIcon}", Level.FoxList[i].InterfaceColor, false);
+                    
+                    //WriteInColor($"{Level.FoxList[i].DisplayIcon}", Level.FoxList[i].InterfaceColor, false);
                     Console.WriteLine();
                 }
 
             }
-            Console.WriteLine("Use arrow keys to move!");
+            Console.WriteLine("Use ← ↑ ↓ → to move!");
             Console.WriteLine();
         }
 
@@ -276,21 +281,61 @@ namespace Zekohop
             NumberOfMoves();
         }
 
+        private static void DrawSelectedBunny(int colorIndex, string prefSufix)
+        {
+            Console.Write($"{prefSufix}");
+            Console.BackgroundColor = Level.BunnyList[colorIndex].InterfaceColor;
+            Console.ForegroundColor = Bunny.ColorIfSelected; // Level.BunnyList[colorIndex].InterfaceColor;
+
+            Console.Write($"{Bunny.DisplayIcon}");
+            Console.ResetColor();
+            Console.Write($"{prefSufix}");
+        }
+
         private static void DrawBunny(int colorIndex, string prefSufix)
         {
+            if (Level.BunnyList[colorIndex].Id == GameGrid.selectedAnimal)
+            {
 
-            WriteInColor($"{prefSufix}{Bunny.DisplayIcon}{prefSufix}", Level.BunnyList[colorIndex].InterfaceColor, false);
+                DrawSelectedBunny(colorIndex, prefSufix);
+            }
+            else
+            {
+                WriteInColor($"{prefSufix}{Bunny.DisplayIcon}{prefSufix}", Level.BunnyList[colorIndex].InterfaceColor, false);
+            }
+            //WriteInColor($"{prefSufix}{Bunny.DisplayIcon}{prefSufix}", Level.BunnyList[colorIndex].InterfaceColor, false);
             // WriteInColor($"{prefSufix}{Level.BunnyList[colorIndex].DisplayIcon}{prefSufix}", Level.BunnyList[colorIndex].InterfaceColor, false);
+        }
+
+        private static void DrawSelectedFox(int colorIndex)
+        {
+            var prefSufix = " ";
+            Console.Write($"{prefSufix}");
+            Console.BackgroundColor = Level.FoxList[colorIndex].InterfaceColor;
+            Console.ForegroundColor = Fox.ColorIfSelected;  //Level.FoxList[colorIndex].InterfaceColor; //  //
+
+            Console.Write($"{Level.FoxList[colorIndex].DisplayIcon}");
+            Console.ResetColor();
+            Console.Write($"{prefSufix}");
         }
 
         private static void DrawFox(int colorIndex)
         {
+           
+            if (Level.FoxList[colorIndex].FoxId == GameGrid.selectedAnimal)
+            {
+                DrawSelectedFox(colorIndex);
+            }
+            else
+            {
+                WriteInColor($" {Level.FoxList[colorIndex].DisplayIcon} ", Level.FoxList[colorIndex].InterfaceColor, false);
+            }
             //Console.BackgroundColor = Level.FoxList[colorIndex].InterfaceColor;
             //Console.ForegroundColor = ConsoleColor.White;
             //Console.Write($" {Level.FoxList[colorIndex].DisplayIcon} ");
 
             //Console.ResetColor();
-            WriteInColor($" {Level.FoxList[colorIndex].DisplayIcon} ", Level.FoxList[colorIndex].InterfaceColor, false);
+            
         }
 
         public static void NumberOfMoves()
@@ -300,12 +345,7 @@ namespace Zekohop
 
         public static void HelpMenu()
         {
-            List<ConsoleColor> bunnyColors = new List<ConsoleColor> { };
 
-            foreach (ConsoleColor obj in Bunny.bunnyInterfaceColors)
-            {
-                bunnyColors.Add(obj);
-            }
 
             Console.WriteLine("GAME RULES JUMP IN’");
             Console.WriteLine();
@@ -321,9 +361,28 @@ namespace Zekohop
             Console.WriteLine("If needed, rabbits can jump out of holes they are already sitting in.");
             Console.WriteLine("Rabbits can jump over a fox no matter the orientation of the fox: tail to front, front to tail, or over the side.");
             Console.WriteLine("You have found a solution when all of the rabbits are inside the holes! The end position of the foxes is not important.");
- 
+
+            ControlsHelpMenu();
+
+        }
+
+        public static void ErrorMessage()
+        {
             Console.WriteLine();
-            Console.WriteLine($"Bunnies: (select one and use arrows to jump over the obstacles)"); 
+            Console.WriteLine("!!!  Invalid input  !!!");
+        }
+
+        public static void ControlsHelpMenu()
+        {
+            List<ConsoleColor> bunnyColors = new List<ConsoleColor> { };
+
+            foreach (ConsoleColor obj in Bunny.bunnyInterfaceColors)
+            {
+                bunnyColors.Add(obj);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine($"Bunnies: (select one and use ← ↑ ↓ → to jump over the obstacles)");
             Console.WriteLine();
 
             Console.Write($"Press [1] to select the {bunnyColors[0]} Bynny ");
@@ -335,7 +394,7 @@ namespace Zekohop
             Console.Write($"Press [3] to select the {bunnyColors[2]} Bynny ");
             WriteInColor($"- {Bunny.DisplayIcon} -", bunnyColors[2]);
             Console.WriteLine();
-            Console.WriteLine("Foxes: (select one and use arrow keys to slide them left and right or up and down)");
+            Console.WriteLine("Foxes: (select one and use  ← ↑ ↓ →  to slide them left and right or up and down)");
             Console.WriteLine($"Press [4] to select the {Fox.InterfaceColors[0]} Fox.");
             WriteInColor($"{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[0]);
             WriteInColor($"{Fox.DisplayIconsList[1]}{Fox.DisplayIconsList[1]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[0]);
@@ -353,6 +412,40 @@ namespace Zekohop
             Console.WriteLine();
 
             Console.WriteLine("Press any key to return to the game!");
+            Console.ReadKey();
+        }
+
+        public static ConsoleKeyInfo ResetLevelMenu()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Restart current level! y/n");
+
+            return Console.ReadKey();
+        }
+
+
+        public static void EnterLevelIndex()
+        {
+            int userChoice;
+            do
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Enter the level you want to play! (1 - {Level.AllLevelsCount})");
+            }
+            while (!int.TryParse(Console.ReadLine(), out userChoice));
+
+            if (userChoice < 0)
+            {
+                userChoice = 1;
+            }
+            else if (userChoice > Level.AllLevelsCount)
+            {
+                userChoice = Level.AllLevelsCount;
+            }
+
+            Level.LevelIndex = userChoice;
+
+            //return userChoice;
         }
     }
 }
