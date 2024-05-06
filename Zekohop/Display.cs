@@ -104,7 +104,7 @@ namespace Zekohop
                         Console.Write($"[{i + 4}] - ");
                         DrawFox(i);
                     }
-                    
+
                     //WriteInColor($"{Level.FoxList[i].DisplayIcon}", Level.FoxList[i].InterfaceColor, false);
                     Console.WriteLine();
                 }
@@ -205,13 +205,13 @@ namespace Zekohop
 
             if (isAHole && isBunnyIn) // if the field is a hole with the rabbit in it
             {
-                WriteInColor("(", ConsoleColor.Green, false);
+                WriteInColor($"{GameGrid.HoleIconLeftHalf}", GameGrid.HoleColorIfFull, false);
                 DrawBunny(GameGrid.Grid[rowIndex, columnIndex] - 1, "");
-                WriteInColor(")", ConsoleColor.Green, false);
+                WriteInColor($"{GameGrid.HoleIconRightHalf}", GameGrid.HoleColorIfFull, false);
             }
             else if (isAHole) // empty hole
             {
-                WriteInColor(" ()", ConsoleColor.DarkGreen, false);
+                WriteInColor($" {GameGrid.HoleIconLeftHalf}{GameGrid.HoleIconRightHalf}", ConsoleColor.DarkGreen, false);
             }
             else
             {
@@ -240,6 +240,34 @@ namespace Zekohop
             Console.Write($"{gridFieldToDrawSufx}");
         }
 
+        private static void DrawTopBottomBorder()
+        {
+            for (int i = 0; i < GameGrid.GridSize; i++)
+            {
+                Console.Write("+---");
+            }
+            Console.Write("+");
+            Console.WriteLine();
+        }
+
+        private static void DrawMiddleLines()
+        {
+            for (int i = 0; i < GameGrid.GridSize; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Console.Write("+---+");
+                }
+                else
+                {
+                    WriteInColor(" - ", ConsoleColor.DarkGray, false);
+                }
+
+            }
+            //Console.Write("+");
+            Console.WriteLine();
+        }
+
         public static void GridAdvanced()
         {
             GameHeader();
@@ -249,33 +277,22 @@ namespace Zekohop
 
                 if (i == 0)
                 {
-                    Console.WriteLine("+---+---+---+---+---+");
+                    DrawTopBottomBorder();
                 }
                 else
                 {
-                    Console.Write("+---+");
-
-                    WriteInColor(" - ", ConsoleColor.DarkGray, false);
-
-                    Console.Write("+---+");
-
-                    WriteInColor(" - ", ConsoleColor.DarkGray, false);
-
-                    Console.Write("+---+");
-
-                    Console.WriteLine();
+                    DrawMiddleLines();
                 }
 
                 for (int j = 0; j < GameGrid.GridSize; j++)
                 {
                     DrawTheSingleField(i, j);
                 }
-
-
                 Console.WriteLine();
+
                 if (i == GameGrid.GridSize - 1)
                 {
-                    Console.WriteLine("+---+---+---+---+---+");
+                    DrawTopBottomBorder();
                 }
             }
             NumberOfMoves();
@@ -321,7 +338,7 @@ namespace Zekohop
 
         private static void DrawFox(int colorIndex)
         {
-           
+
             if (Level.FoxList[colorIndex].FoxId == GameGrid.selectedAnimal)
             {
                 DrawSelectedFox(colorIndex);
@@ -335,7 +352,7 @@ namespace Zekohop
             //Console.Write($" {Level.FoxList[colorIndex].DisplayIcon} ");
 
             //Console.ResetColor();
-            
+
         }
 
         public static void NumberOfMoves()
@@ -343,27 +360,63 @@ namespace Zekohop
             Console.WriteLine($"Number of moves {GameGrid.MovesCount}");
         }
 
+        public static (int x, int y) HandleWindowSize()
+        {
+            var x = Console.WindowWidth;
+            var y = Console.WindowHeight;
+
+            Console.SetWindowSize(120, 60);
+
+            return (x, y);
+        }
+
         public static void HelpMenu()
         {
 
+            (int x, int y) = HandleWindowSize();
 
-            Console.WriteLine("GAME RULES JUMP IN’");
+
+            WriteInColor("GAME RULES JUMP IN’", ConsoleColor.Yellow);
             Console.WriteLine();
-            Console.WriteLine($"The object of the game is to move the rabbits [{Bunny.DisplayIcon}] and foxes [{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]}] around the game board until all of the rabbits are safe in the holes [( )].");
-            Console.WriteLine("Movement rules");
-            Console.WriteLine("Foxes move by sliding forward or backward.Foxes cannot jump over obstacles.");
-            Console.WriteLine($"Mushrooms [{Mushroom.Icon}] are stationary and cannot be moved.");
-            Console.WriteLine("Rabbits move by jumping horizontally or vertically over one or more spaces with obstacles: other rabbits, foxes, mushrooms or a combination of these.");
-            Console.WriteLine("Rabbits must land on the first empty space after a jump - they can never move over empty spaces.");
-            Console.WriteLine("Rabbits can never move without jumping over at least 1 obstacle, thus they can never move to an adjacent space.");
-            Console.WriteLine("A hole with a rabbit inside is an obstacle, while empty holes are not obstacles.");
-            Console.WriteLine("A rabbit can jump into – but not over – an empty hole.");
-            Console.WriteLine("If needed, rabbits can jump out of holes they are already sitting in.");
-            Console.WriteLine("Rabbits can jump over a fox no matter the orientation of the fox: tail to front, front to tail, or over the side.");
-            Console.WriteLine("You have found a solution when all of the rabbits are inside the holes! The end position of the foxes is not important.");
+            Console.Write($"The object of the game is to move the rabbits [ "); //{Bunny.DisplayIcon}] and foxes [{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]}] around the game board until all of the rabbits are safe in the holes ");
+
+            for (int i = 0; i<Bunny.bunnyInterfaceColors.Count; i++)
+            {
+                WriteInColor($"{Bunny.DisplayIcon} ", Bunny.bunnyInterfaceColors[i], false);
+            }
+            Console.Write("], \nand foxes [ ");
+
+            for (int i = 0; i < Fox.InterfaceColors.Count; i++)
+            {
+                for (int j = 0; j < Fox.DisplayIconsList.Count; j++)
+                {
+                    Console.Write("- ");
+                    WriteInColor($"{Fox.DisplayIconsList[j]} {Fox.DisplayIconsList[j]} ", Fox.InterfaceColors[i], false);
+                }
+                
+            }
+
+            Console.Write("- ] around the game board \nuntil all of the rabbits are safe in the holes ");
+            WriteInColor($"{GameGrid.HoleIconLeftHalf} {GameGrid.HoleIconRightHalf}", GameGrid.HoleColorIfEmpty, false);
+            Console.WriteLine(".");
+            Console.WriteLine();
+            Console.WriteLine();
+            WriteInColor("General rules", ConsoleColor.Yellow);
+            Console.WriteLine("→ Foxes move by sliding forward or backward.Foxes cannot jump over obstacles.");
+            Console.Write($"→ Mushrooms [");
+            WriteInColor($"{Mushroom.Icon}", Mushroom.IconColor, false);
+            Console.WriteLine("] are stationary and cannot be moved.");
+            Console.WriteLine("→ Rabbits move by jumping horizontally or vertically over one or more spaces with obstacles: \nother rabbits, foxes, mushrooms or a combination of these.");
+            Console.WriteLine("→ Rabbits must land on the first empty space after a jump - they can never move over empty spaces.");
+            Console.WriteLine("→ Rabbits can never move without jumping over at least 1 obstacle, \nthus they can never move to an adjacent space.");
+            Console.WriteLine("→ A hole with a rabbit inside is an obstacle, while empty holes are not obstacles.");
+            Console.WriteLine("→ A rabbit can jump into – but not over – an empty hole.");
+            Console.WriteLine("→ If needed, rabbits can jump out of holes they are already sitting in.");
+            Console.WriteLine("→ Rabbits can jump over a fox no matter the orientation of the fox: \ntail to front, front to tail, or over the side.");
+            Console.WriteLine("→ You have found a solution when all of the rabbits are inside the holes! \nThe end position of the foxes is not important.");
 
             ControlsHelpMenu();
-
+            Console.SetWindowSize(x, y);
         }
 
         public static void ErrorMessage()
@@ -382,6 +435,10 @@ namespace Zekohop
             }
 
             Console.WriteLine();
+            Console.WriteLine();
+            WriteInColor("Keyboard commands!", ConsoleColor.Yellow);
+
+            Console.WriteLine();
             Console.WriteLine($"Bunnies: (select one and use ← ↑ ↓ → to jump over the obstacles)");
             Console.WriteLine();
 
@@ -396,12 +453,12 @@ namespace Zekohop
             Console.WriteLine();
             Console.WriteLine("Foxes: (select one and use  ← ↑ ↓ →  to slide them left and right or up and down)");
             Console.WriteLine($"Press [4] to select the {Fox.InterfaceColors[0]} Fox.");
-            WriteInColor($"{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[0]);
-            WriteInColor($"{Fox.DisplayIconsList[1]}{Fox.DisplayIconsList[1]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[0]);
-            Console.WriteLine();
-            Console.WriteLine($"Press [5] to select the {Fox.InterfaceColors[1]} Fox.");
-            WriteInColor($"{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[1]);
-            WriteInColor($"{Fox.DisplayIconsList[1]}{Fox.DisplayIconsList[1]} - {Fox.DisplayIconsList[2]} - {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[1]);
+            WriteInColor($"{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]}   {Fox.DisplayIconsList[2]}   {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[0]);
+            WriteInColor($"{Fox.DisplayIconsList[1]}{Fox.DisplayIconsList[1]}   {Fox.DisplayIconsList[2]}   {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[0]);
+            Console.WriteLine();                                                                           
+            Console.WriteLine($"Press [5] to select the {Fox.InterfaceColors[1]} Fox.");                   
+            WriteInColor($"{Fox.DisplayIconsList[0]}{Fox.DisplayIconsList[0]}   {Fox.DisplayIconsList[2]}   {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[1]);
+            WriteInColor($"{Fox.DisplayIconsList[1]}{Fox.DisplayIconsList[1]}   {Fox.DisplayIconsList[2]}   {Fox.DisplayIconsList[3]}", Fox.InterfaceColors[1]);
 
             Console.WriteLine();
             Console.WriteLine();
@@ -422,7 +479,6 @@ namespace Zekohop
 
             return Console.ReadKey();
         }
-
 
         public static void EnterLevelIndex()
         {

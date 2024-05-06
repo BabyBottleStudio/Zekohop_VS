@@ -8,12 +8,20 @@ namespace Zekohop
 {
     class GameGrid
     {
-        private const int gridSize = 5; // defines the size of the grid
+        private const int gridSize = 5; // defines the size of the grid. Odd numbers recomended
         static int[,] _grid; // game grid 5x5
 
         private static int movesCount = 0; // how many moves has player used to solve the puzzle
 
-        static List<(int row, int col)> holeList; // hole list treba da bude fleksibilna lista
+        /// <summary>
+        /// Hole list is a flexibile. It contains the coordinates of all possible holes in the game. If mushroom is spawned ower the hole, then the coordinates for this hole are deleted.
+        /// </summary>
+        static List<(int row, int col)> holeList;
+        public static readonly string HoleIconLeftHalf = "(";
+        public static readonly string HoleIconRightHalf = ")";
+
+        public static readonly ConsoleColor HoleColorIfEmpty = ConsoleColor.DarkGreen;
+        public static readonly ConsoleColor HoleColorIfFull = ConsoleColor.Green;
 
         public static int selectedAnimal;
         public static Bunny currentBunny;
