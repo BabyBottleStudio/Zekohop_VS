@@ -8,6 +8,7 @@ namespace Zekohop
 {
     class Mushroom
     {
+
         public readonly static string Icon = "Q";
         public readonly static ConsoleColor IconColor = ConsoleColor.DarkRed;
         
@@ -19,7 +20,6 @@ namespace Zekohop
         }
 
         public (int row, int col) Position { get => _pos; set => _pos = value; }
-
 
         /// <summary>
         /// Method for adding the Mushroom objects into the level.
@@ -33,7 +33,5 @@ namespace Zekohop
 
             GameGrid.HoleList.Remove(mushroomPos); // if mushroom covers the hole, delete the hole from the list
         }
-
-
     }
 }

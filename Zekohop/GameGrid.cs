@@ -11,52 +11,68 @@ namespace Zekohop
         private const int gridSize = 5; // defines the size of the grid. Odd numbers recomended
         static int[,] _grid; // game grid 5x5
 
-        private static int movesCount = 0; // how many moves has player used to solve the puzzle
+        private static int movesCount = 0; // how many moves has player used to solve the puzzle. Updated in realtime.
 
         /// <summary>
         /// Hole list is a flexibile. It contains the coordinates of all possible holes in the game. If mushroom is spawned ower the hole, then the coordinates for this hole are deleted.
         /// </summary>
         static List<(int row, int col)> holeList;
+
         public static readonly string HoleIconLeftHalf = "(";
         public static readonly string HoleIconRightHalf = ")";
 
         public static readonly ConsoleColor HoleColorIfEmpty = ConsoleColor.DarkGreen;
         public static readonly ConsoleColor HoleColorIfFull = ConsoleColor.Green;
 
-        public static int selectedAnimal;
-        public static Bunny currentBunny;
+        public static int selectedAnimal; // int 1 - 5. (1-3) bunnies , (4,5) fox
+        public static Bunny currentBunny; // da li da se ovo prebaci u klasu?
         public static Fox currentFox;
+
         public static int userInput;
 
+        /// <summary>
+        /// Gets the grid size.
+        /// </summary>
         public static int GridSize => gridSize;
 
+        /// <summary>
+        /// Returns the list of coordinates that are marked as a "hole" element of a game.
+        /// </summary>
         public static List<(int row, int col)> HoleList { get => holeList; set => holeList = value; }
+
+        /// <summary>
+        /// Gets and sets the 2-dimensional array that is is the Game Grid.
+        /// </summary>
         public static int[,] Grid { get => _grid; set => _grid = value; }
+        
+        /// <summary>
+        /// Count of moves performed by player.
+        /// </summary>
         public static int MovesCount { get => movesCount; set => movesCount = value; }
 
-        /*
-        00 01 02 03 04
-        10 11 12 13 14
-        20 21 22 23 24
-        30 31 32 33 34
-        40 41 42 43 44
-        */
+
+        /// <summary>
+        /// Initializing the grid with the "hole" elements.
+        /// </summary>
+        public GameGrid()
+        {
+            Grid = new int[GridSize, GridSize];
+            Grid.Initialize();
+            HoleList = new List<(int row, int col)> { (0, 0), (0, GridSize-1), ((GridSize - 1)/2, (GridSize - 1) / 2), ((GridSize - 1), 0), ((GridSize - 1), (GridSize - 1)) };
+        }
 
 
+        /// <summary>
+        /// Increases the movesCount by 1.
+        /// </summary>
         public static void IncreaseMovesCount()
         {
             MovesCount++;
         }
 
-        public GameGrid()
-        {
-            Grid = new int[GridSize, GridSize];
-            Grid.Initialize();
-            HoleList = new List<(int row, int col)> { (0, 0), (0, 4), (2, 2), (4, 0), (4, 4) };
-        }
-
-
-
+        /// <summary>
+        /// Sets the selection of an animal. It can be rabbit 1 - 3 or Fox 4 and 5.
+        /// </summary>
         public static void SetSelectedAnimal()
         {
             if (selectedAnimal > 3)
@@ -69,6 +85,9 @@ namespace Zekohop
             }
         }
 
+        /// <summary>
+        /// Moves the selected animal. Dah.
+        /// </summary>
         public static void MoveSelectedAnimal()
         {
             if (selectedAnimal > 3)
@@ -83,6 +102,10 @@ namespace Zekohop
             }
         }
 
+        /// <summary>
+        /// Checks if there is a win condition. It counts the bunnies and checks if their coordinates are matching the coordinates of the holes.
+        /// </summary>
+        /// <returns></returns>
         public static bool IsThereAWin()
         {
             int count = Level.BunnyList.Count(bunny => HoleList.Contains(bunny.CurrentPos));
@@ -107,6 +130,9 @@ namespace Zekohop
 */
         }
 
+        /// <summary>
+        /// At the start of each level, the count of Bunnies, Foxes and Moves are reset to 0.
+        /// </summary>
         public static void ResetBunniesFoxesCount()
         {
             Fox.ResetFoxCount();

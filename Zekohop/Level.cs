@@ -11,7 +11,13 @@ namespace Zekohop
     {
         // this class handles the data levels contain
         // it has 3 lists, for each type of objects in the game. Set level data handles the lists and creates instances with the proper coordinates. Impossible stuff like havint two objects on the same coordinate is not handled. Maybe if a level creator is added later :)
+        
+        /// <summary>
+        /// Hardcode of the levels amount. Default is 60.
+        /// </summary>
         private const int _allLevelsCount = 60;
+
+
         private static List<Mushroom> mushroomList = new List<Mushroom>();
         private static List<Bunny> bunnyList = new List<Bunny>();
         private static List<Fox> foxList = new List<Fox>();
@@ -19,21 +25,39 @@ namespace Zekohop
         private static int levelIndex;
         private static int numberOfMOves;
 
+        /// <summary>
+        /// Returns the amount of levels hardcoded into the game.
+        /// </summary>
         public static int AllLevelsCount => _allLevelsCount;
 
+        /// <summary>
+        /// List of mushrooms instatiated into the level.
+        /// </summary>
         internal static List<Mushroom> MushroomList
         { get => mushroomList; set => mushroomList = value; }
 
+
+        /// <summary>
+        /// List of bunnies instatiated into the level.
+        /// </summary>
         internal static List<Bunny> BunnyList
         { get => bunnyList; set => bunnyList = value; }
 
+        /// <summary>
+        /// List of Foxes instatiated into the level.
+        /// </summary>
         internal static List<Fox> FoxList
         { get => foxList; set => foxList = value; }
 
-
+        /// <summary>
+        /// Index of a current level that player is playing.
+        /// </summary>
         internal static int LevelIndex
         { get => levelIndex; set => levelIndex = value; } // handles the current level
 
+        /// <summary>
+        /// Number of minimum moves per level to solve the puzzle. Hardcoded. Found on the booklet of the game.
+        /// </summary>
         internal static int NumberOfMOves
         { get => numberOfMOves; set => numberOfMOves = value; } // represents the number of minimal moves neededt to solve the level
 
@@ -64,7 +88,9 @@ namespace Zekohop
             }
         }
 
-
+        /// <summary>
+        /// If user press A, previous level is loaded.
+        /// </summary>
         public static void JumpToPreviousLevel()
         {
             LevelIndex--;
@@ -74,6 +100,10 @@ namespace Zekohop
             }
         }
 
+
+        /// <summary>
+        /// If user press D, next level is loaded.
+        /// </summary>
         public static void JumpToNextLevel()
         {
             LevelIndex++;
@@ -85,7 +115,7 @@ namespace Zekohop
 
 
         /// <summary>
-        /// Cleans up the old data and loads the new data into the level.
+        /// Cleans up the old data and loads the new data into the level. Levels are hardcoded here. They contain all of the coordinates of the elements involved into the puzzle. They are instatiated here as well.
         /// </summary>
         internal static void SetLevelData()
         {

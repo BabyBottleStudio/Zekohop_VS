@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zekohop
 {
-    class Display
+    public static class Display
     {
 
 
@@ -115,7 +115,7 @@ namespace Zekohop
         }
 
         /// <summary>
-        /// Writes the text in color. If writeLine is provided as false, uses the Write command. Otherwise uses WriteLine.
+        /// Writes the text in color. It uses Console.WriteLine() by default. If optional bool "false", method uses the Console.Write() command.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="color"></param>
@@ -136,7 +136,7 @@ namespace Zekohop
         }
 
         /// <summary>
-        /// This method returns the bool if the current field is a Hole or not. Parameters are the coordinates of the current field.
+        /// This method returns the bool if the current field is a "Hole". Parameters are the coordinates of the current field. Those will be compared to the Hole List. Returns true if coordinates are match.
         /// </summary>
         /// <param name="rowIndex"></param>
         /// <param name="columnIndex"></param>
@@ -168,23 +168,27 @@ namespace Zekohop
             return 0;
         }
 
-        private static void DrawTheSingleField(int rowIndex, int columnIndex)
+
+        /// <summary>
+        /// Draws the one cell of a grid. Parameters define the coordinates of the cell that is drawn.
+        /// </summary>
+        /// <param name="rowIndex"></param>
+        /// <param name="columnIndex"></param>
+        private static void DrawTheSingleCell(int rowIndex, int columnIndex)
         {
-
-
             string gridFieldToDrawPref = " ";
             string gridFieldToDrawSufx = "";
 
-            if (columnIndex == 0) // ukoliko je pocetna kolona
+            if (columnIndex == 0) // starting column; ukoliko je pocetna kolona
             {
                 gridFieldToDrawPref = "|";
 
             }
-            else if (columnIndex == GameGrid.GridSize - 1) // ukoliko je krajnja
+            else if (columnIndex == GameGrid.GridSize - 1) // end column; ukoliko je krajnja
             {
                 gridFieldToDrawSufx = "|";
 
-                if (rowIndex % 2 == 0) // ako je red paran
+                if (rowIndex % 2 == 0) // even rows; ako je red paran
                 {
                     gridFieldToDrawPref = "|";
                 }
@@ -203,13 +207,13 @@ namespace Zekohop
 
             Console.Write($"{gridFieldToDrawPref}");
 
-            if (isAHole && isBunnyIn) // if the field is a hole with the rabbit in it
+            if (isAHole && isBunnyIn) // if the cell is a hole with the rabbit in it
             {
                 WriteInColor($"{GameGrid.HoleIconLeftHalf}", GameGrid.HoleColorIfFull, false);
                 DrawBunny(GameGrid.Grid[rowIndex, columnIndex] - 1, "");
                 WriteInColor($"{GameGrid.HoleIconRightHalf}", GameGrid.HoleColorIfFull, false);
             }
-            else if (isAHole) // empty hole
+            else if (isAHole) // empty hole cell
             {
                 WriteInColor($" {GameGrid.HoleIconLeftHalf}{GameGrid.HoleIconRightHalf}", ConsoleColor.DarkGreen, false);
             }
@@ -218,7 +222,7 @@ namespace Zekohop
                 switch (GameGrid.Grid[rowIndex, columnIndex])
                 {
                     case 0:
-                        Console.Write("   "); // empty field
+                        Console.Write("   "); // empty cell
                         break;
 
                     case 1:
@@ -240,6 +244,10 @@ namespace Zekohop
             Console.Write($"{gridFieldToDrawSufx}");
         }
 
+
+        /// <summary>
+        /// Draws the top and bottom border of the game grid.
+        /// </summary>
         private static void DrawTopBottomBorder()
         {
             for (int i = 0; i < GameGrid.GridSize; i++)
@@ -250,6 +258,10 @@ namespace Zekohop
             Console.WriteLine();
         }
 
+
+        /// <summary>
+        /// Draws the lines of the grid
+        /// </summary>
         private static void DrawMiddleLines()
         {
             for (int i = 0; i < GameGrid.GridSize; i++)
@@ -268,6 +280,10 @@ namespace Zekohop
             Console.WriteLine();
         }
 
+
+        /// <summary>
+        /// Final method that draws the grid completely.
+        /// </summary>
         public static void GridAdvanced()
         {
             GameHeader();
@@ -286,7 +302,7 @@ namespace Zekohop
 
                 for (int j = 0; j < GameGrid.GridSize; j++)
                 {
-                    DrawTheSingleField(i, j);
+                    DrawTheSingleCell(i, j);
                 }
                 Console.WriteLine();
 
@@ -298,6 +314,11 @@ namespace Zekohop
             NumberOfMoves();
         }
 
+        /// <summary>
+        /// Draws the bunny with the active seletction.
+        /// </summary>
+        /// <param name="colorIndex"></param>
+        /// <param name="prefSufix"></param>
         private static void DrawSelectedBunny(int colorIndex, string prefSufix)
         {
             Console.Write($"{prefSufix}");
@@ -308,6 +329,7 @@ namespace Zekohop
             Console.ResetColor();
             Console.Write($"{prefSufix}");
         }
+
 
         private static void DrawBunny(int colorIndex, string prefSufix)
         {
@@ -339,7 +361,7 @@ namespace Zekohop
         private static void DrawFox(int colorIndex)
         {
 
-            if (Level.FoxList[colorIndex].FoxId == GameGrid.selectedAnimal)
+            if (Level.FoxList[colorIndex].Id == GameGrid.selectedAnimal)
             {
                 DrawSelectedFox(colorIndex);
             }
@@ -480,6 +502,10 @@ namespace Zekohop
             return Console.ReadKey();
         }
 
+
+        /// <summary>
+        /// Opens the menu that allowes the user to enter the desired level index and warp to it.
+        /// </summary>
         public static void EnterLevelIndex()
         {
             int userChoice;

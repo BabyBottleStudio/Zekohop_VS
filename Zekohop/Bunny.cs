@@ -5,23 +5,46 @@ namespace Zekohop
 {
     class Bunny
     {
-        int _id;
+        int _id; // Prilikom instanciranja, svaki zec dobija svoj id. Uglavnom je to redni broj instanciranja.
 
-        (int x, int y) _startPos;
-        (int x, int y) _currentPos;
+        (int x, int y) _startPos; // coordinates of the starting position of the bunny. Those are the coordinates embeded when the level is initialized.
+        (int x, int y) _currentPos; //Coordinates of the bunny during the gameplay.
 
+        /// <summary>
+        /// Amount of the bunnies in the level. Important for calculating the win condition.
+        /// </summary>
         private static int bunnyCount;
-        public readonly static List<ConsoleColor> bunnyInterfaceColors = new List<ConsoleColor> // ako menjas ovo ovde, u helpu su ove boje hardkodovane
+
+        /// <summary>
+        /// List of colors used to represent bunnies graphics.
+        /// </summary>
+        public readonly static List<ConsoleColor> bunnyInterfaceColors = new List<ConsoleColor> 
         {
             ConsoleColor.White,
             ConsoleColor.DarkGray,
             ConsoleColor.Yellow,
         };
 
+        /// <summary>
+        /// Assigned color from the list to the instance of the bunny.
+        /// </summary>
         private ConsoleColor interfaceColor;
+
+        /// <summary>
+        /// How to represent the text icon on the selected object.
+        /// </summary>
         private static ConsoleColor colorIfSelected;
+
+        /// <summary>
+        /// Text icon of the bunny.
+        /// </summary>
         public static readonly string DisplayIcon = "B";
 
+
+        /// <summary>
+        /// Initializing the bunny object. It assignes the startPos, currentPos, increases the bunnyCount, sets the Id, and interfaceColor from the list of colors.
+        /// </summary>
+        /// <param name="startPos"></param>
         public Bunny((int x, int y) startPos)
         {
             StartPos = startPos;
@@ -32,24 +55,55 @@ namespace Zekohop
 
         }
 
+        /// <summary>
+        /// Coordinates of the bunny during the gameplay.
+        /// </summary>
         public (int row, int col) CurrentPos { get => _currentPos; set => _currentPos = value; }
         public int Id { get => _id;}
-        public (int row, int col) StartPos { get => _startPos; set => _startPos = value; }
-        public static int BunnyCount { get => bunnyCount; set => bunnyCount = value; }
-        public ConsoleColor InterfaceColor { get => interfaceColor; set => interfaceColor = value; }
-        public static ConsoleColor ColorIfSelected { get => colorIfSelected; set => colorIfSelected = value; }
 
+        /// <summary>
+        /// Coordinates of the starting position of the bunny. Those are the coordinates embeded when the level is initialized.
+        /// </summary>
+        public (int row, int col) StartPos { get => _startPos; set => _startPos = value; }
+
+        /// <summary>
+        /// Gets and sets the count of the bunnies.
+        /// </summary>
+        public static int BunnyCount { get => bunnyCount; set => bunnyCount = value; }
+
+        /// <summary>
+        /// Sets the color from the list to the instance of the bunny. Gets the color from the object.
+        /// </summary>
+        public ConsoleColor InterfaceColor { get => interfaceColor; set => interfaceColor = value; }
+        
+        /// <summary>
+        /// Gets the color of selected bunny used in graphics.
+        /// </summary>
+        public static ConsoleColor ColorIfSelected { get => colorIfSelected; }
+
+        /// <summary>
+        /// Resets the bunnie count to 0.
+        /// </summary>
         public static void ResetBunniesCount()
         {
             BunnyCount = 0;
         }
 
+
+        /// <summary>
+        /// It writes the values of the bunny to the grid. Important for calculations.
+        /// </summary>
+        /// <param name="theBunny"></param>
         public static void WriteBunnyIdToTheGridInitial(Bunny theBunny)
         {
             GameGrid.Grid[theBunny.StartPos.row, theBunny.StartPos.col] = theBunny.Id;
             //BunnyList.Add(theBunny);
         }
                 
+        /// <summary>
+        /// Test if bunnie is going to jump out of the grid, providint invalid index and causing the program to crash.
+        /// </summary>
+        /// <returns></returns>
         private static bool IsBunnyGoingToJupmOutOfTheGrid() // da li je ovaj test neophodan ili samo mi treba bolja logika dole u funkcijijijiji. Ili ovaj test sprecava dalje proracune ako se nije ispunio
         {
             int direction = GameGrid.userInput;
@@ -93,6 +147,11 @@ namespace Zekohop
             return true;
         }
         
+
+        /// <summary>
+        /// Tests if bunny is legit to jump over something. In grid, those values are larger than zero.
+        /// </summary>
+        /// <returns></returns>
         private static bool IsBunnyLegitToJump() // this method checks if the selected bunny is going to jump over the fox, mushroom or another bunny and retunrs bool
         {
             int direction = GameGrid.userInput;
@@ -133,6 +192,10 @@ namespace Zekohop
             return false;
         }
 
+        /// <summary>
+        /// Returns the coordinates of the first empty cell that bunny can hop to. If that cell does not exist, returns null and jump is blocked.
+        /// </summary>
+        /// <returns></returns>
         private static (int a, int b)? GetPlaceToHopTo()
         {
             int direction = GameGrid.userInput;
@@ -183,6 +246,9 @@ namespace Zekohop
             return null;
         }
 
+        /// <summary>
+        /// After all of the tests, if bunny stays within a grid, jumps over something and has a place to jump to, it moves.
+        /// </summary>
         public static void MoveBunny()
         {
             //int direction = GameGrid.userInput;
@@ -208,12 +274,17 @@ namespace Zekohop
                 hopTo = GetPlaceToHopTo();
             }
 
-            if (HopToField(hopTo)) // treba videti kako da se selekcija zeca iskoristi i ovde da se ne ubacuje kao paramtar
+            if (HopToField(hopTo))
             {
                 GameGrid.IncreaseMovesCount();
             }
         }
 
+        /// <summary>
+        /// Returns true if Hop to coordinates are not null and bunny performs the jump. Returns false if conditions are not met.
+        /// </summary>
+        /// <param name="hopTo"></param>
+        /// <returns></returns>
         static bool HopToField((int a, int b)? hopTo)
         {
             if (hopTo.HasValue)
@@ -226,14 +297,5 @@ namespace Zekohop
             }
             return false;
         }
-
-
-
-
-
-
-
-
-
     }
 }

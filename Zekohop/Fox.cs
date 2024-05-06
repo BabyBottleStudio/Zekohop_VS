@@ -10,7 +10,7 @@ namespace Zekohop
     {
 
         private static int foxCount; // static variable carved into the class rather than into the instance
-        int foxId; // each instance of the fox has unique ID
+        int _id; // each instance of the fox has unique ID
         (int row, int col) _headPos; // position of a head
         (int row, int col) _tailPos; // position of a tail
         string _orientation; // defines how the fox is oriented. It makes a difference if it is horisontal L to R or R to L. I wanted to make it more fun and diverse, like in the original board game Jump In' by Smart Games.
@@ -58,7 +58,7 @@ namespace Zekohop
             }
 
             FoxCount++;
-            FoxId = FoxCount + 3;
+            Id = FoxCount + 3;
 
             InterfaceColor = InterfaceColors[FoxCount % 2];
         }
@@ -85,8 +85,8 @@ namespace Zekohop
         /// <summary>
         /// Unique ID of the fox. The ID is assigned upon instantiation. It represents the ordinal number of the instance + 3. This value is used to write the fox into the grid. It is either 4 or 5.
         /// </summary>
-        public int FoxId
-        { get => foxId; set => foxId = value; }
+        public int Id
+        { get => _id; set => _id = value; }
 
         /// <summary>
         /// Orientation describes the Fox's alignment in space. It also distinguishes between the head and the tail sides. There are four orientations: Horizontal Left, Horizontal Right, Vertical Up, Vertical Down.
@@ -120,8 +120,8 @@ namespace Zekohop
         /// <param name="theFox"></param>
         public static void WriteFoxIdToTheGrid(Fox theFox) // ovo sluzi za inicijalizaciju nivoa tako da se prilikom pokretanja ove metode u Levels, desava kreiranje instanci i mora da se fox ufura kao parametar
         {
-            GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.FoxId;
-            GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.FoxId;
+            GameGrid.Grid[theFox.HeadPos.row, theFox.HeadPos.col] = theFox.Id;
+            GameGrid.Grid[theFox.TailPos.row, theFox.TailPos.col] = theFox.Id;
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Zekohop
                         }
                         break;
                 }
-                WriteValuesToFoxCoords(theFox.FoxId); // writes the fox to the new position
+                WriteValuesToFoxCoords(theFox.Id); // writes the fox to the new position
 
 
             }

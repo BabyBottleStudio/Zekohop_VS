@@ -10,24 +10,18 @@ namespace Zekohop
     {
         static void Main(string[] args)
         {
-            
-
             Level.LevelIndex = 1;
 
             while (true)
             {
+                // setting up the scene 
                 Console.Clear();
-                new GameGrid(); // ovo je pravilo bagove
-
+                new GameGrid();
                 GameGrid.ResetBunniesFoxesCount();
-
                 Level.LoadLevel();
-
                 GameGrid.selectedAnimal = 1;
-
                 Display.GridAdvanced();
-
-
+                // setting up the scene END
 
                 while (true)
                 {
@@ -96,10 +90,15 @@ namespace Zekohop
             }
         }
 
+
+        /// <summary>
+        /// Handles the user input values and distribute them through the game.
+        /// </summary>
+        /// <param name="currentAnimal"></param>
+        /// <param name="selectedAnimal"></param>
+        /// <returns></returns>
         static int UserInput(int currentAnimal, out int selectedAnimal)
         {
-
-
             // User can input arrow keys, number keys 1 - 5, A,S,D 
             // numbers are changing the selection of a current animal in the scene
             // arrow keys are moving the selection
@@ -214,16 +213,13 @@ sistem mora da prati koliko je zeceva na sceni i koliko je  u rupama. Win condit
 
 /// sta treba dodati??? 
 /// 
-/// indikaciju šta je selektovano sa background color na consoli
+/// Idealno bi bilo da se legitimne koordinate sakupe i markiraju tako da kad se selektuje zec ili lisica, da odmah legitimna polja budu markirana.
 /// 
-/// prebaci u display sta treba da se ubaci u display klasu
+/// kada se nivo zavrsi, da pita da li zelis da igras isti ponovo ili sledeci...
 /// 
-/// probaj zvukove da odradis
 ///  
 /// 
-///  refaktoring
 ///  
-/// bugs log
 
 */
 
